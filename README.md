@@ -56,6 +56,32 @@ Demo 使用同一套 SDK，展示手机实时镜像、逐步执行日志，以�
 
 候选编号绑定当前画面的区域，模型在有限候选中选择，SDK 负责坐标映射与平台点击。多步执行时，通过图片对比衔接下一步并复用末帧。三端共用定位流程，分别适配 UiAutomator2、WDA 与 UITest；SDK 不依赖演示网页或 AI Phone 框架。
 
+### 三端视觉定位与执行
+
+三端真机／虚拟机均已贯通。下面分别展开官网中的原始编号图，点击图片可查看原始分辨率；图中记录的是各自实验时的候选编号。
+
+#### Android · 真机／虚拟机
+
+UiAutomator2 系统树与截图生成候选区域，模型选择 **N31**，再映射为坐标点击。
+
+<p align="center"><a href="docs/media/android-grounding.png"><img src="docs/media/android-grounding.png" width="600" alt="Android原始编号图，选择N31"></a></p>
+
+#### iOS · 真机／虚拟机
+
+WDA / XCTest 提供层级，适配 point 与截图 pixel 坐标；模型依据画面选择 **N25**。
+
+<p align="center"><a href="docs/media/ios-grounding.png"><img src="docs/media/ios-grounding.png" width="600" alt="iOS原始编号图，选择N25"></a></p>
+
+#### HarmonyOS · 真机／虚拟机
+
+UITest / hmdriver2 提供层级，经平台区域适配生成编号图；模型选择 **N47**，由驱动执行。
+
+<p align="center"><a href="docs/media/harmony-grounding.png"><img src="docs/media/harmony-grounding.png" width="600" alt="HarmonyOS原始编号图，选择N47"></a></p>
+
+三张原图分别来自安卓真机、iOS虚拟机和鸿蒙虚拟机的既有实验；标题标明当前组件支持的设备范围。
+
+### 官网技术说明全图
+
 ![技术与接入说明](docs/media/site-guide.png)
 
 ## 安装与调用
