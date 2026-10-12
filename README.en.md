@@ -1,10 +1,10 @@
 # Jev Phone
 
-**A multimodal visual interaction SDK for Android, iOS, and HarmonyOS.**
+**Jev multimodal model integration for physical devices and emulators across Android, iOS, and HarmonyOS, with millisecond-level device-channel processing.**
 
 [English](README.en.md) · [中文](README.md)
 
-The model chooses a numbered region in the current screen. The SDK binds that choice to a real device location and executes the tap. Integrate it into an existing AI agent, planner, test system, or script for individual taps and sequential steps.
+An independent Python SDK for visual target selection and phone taps. It connects multimodal decisions to three platform drivers, exposes measured device-processing stages, and supports individual taps and sequential steps. Model latency is measured separately.
 
 <p align="center"><b>Android · iOS · HarmonyOS</b> / Physical devices · Emulators<br>Independent Python SDK · Same execution path in SDK and Demo · MIT</p>
 
@@ -12,27 +12,9 @@ The model chooses a numbered region in the current screen. The SDK binds that ch
 
 ## Demos
 
-### Choose hard difficulty and start a challenge
+The current two recordings are archived trial runs, not demonstrations meeting the **under 2000ms per complete step** requirement. They have been removed from the showcase: the first tap chain takes 2455.41ms in the challenge example, and the third takes 2328.37ms in the section example, before adding transitions. Model round-trip time alone is not the acceptance metric.
 
-A real Android phone: open practice settings → select the rightmost orange difficulty card → start the challenge. The final question is marked as hard. Playback is at original speed; the upper-right stopwatch continuously shows execution time.
-
-![Three-step hard challenge](docs/media/demo-hard-challenge.gif)
-
-| Action | Model request round trip |
-|---|---:|
-| Open practice settings | 1944.83ms |
-| Select hard difficulty | 1025.65ms |
-| Start the challenge | 765.28ms |
-
-Total execution: **6570.28ms**, including capture, candidate generation, model requests, taps, and transitions between steps. [Video](docs/media/demo-hard-challenge.mp4) · [Timing record](docs/media/demo-hard-challenge.json)
-
-### Browse sections and open practice settings
-
-Select “Basic relations between sets” → “Basic operations on sets” → the yellow pencil in the upper-right corner to open practice settings.
-
-![Section navigation and settings](docs/media/demo-section-switch.gif)
-
-Model request round trips: **827.78ms / 693.05ms / 1999.53ms**. Every model request in these two recordings is below two seconds. This measures model request round trips, not complete step execution. [Video](docs/media/demo-section-switch.mp4) · [Timing record](docs/media/demo-section-switch.json)
+[Full stage-by-stage timing record](docs/演示耗时明细.md). Recordings remain archived; replacement showcase recordings must meet the complete-step limit without changing execution parameters or playback speed.
 
 ## Why it exists
 
