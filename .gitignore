@@ -1,0 +1,19 @@
+# Local discussion handoff; not public documentation
+.context/
+
+# Credentials and generated artifacts
+.env
+.env.*
+!.env.example
+.data/
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.playwright-mcp/
+
+# Local builds and private experimental reports
+build/
+dist/
+docs/验证报告.md
+docs/步骤衔接对照测试.md

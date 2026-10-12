@@ -1,0 +1,5 @@
+[
+  {"platform": "android", "device": "YOUR_ADB_SERIAL", "targets": ["点击设置"]},
+  {"platform": "ios", "device": "http://127.0.0.1:18100", "targets": ["点击通用"]},
+  {"platform": "harmony", "device": "YOUR_HDC_SERIAL", "targets": ["点击显示和亮度"]}
+]

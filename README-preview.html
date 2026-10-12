@@ -1,0 +1,90 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev Phone · 技术与接入</title><style>body{margin:0;background:#f3f4ef;color:#1b2824;font:16px/1.85 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1100px;margin:40px auto;padding:32px 48px;background:white;border:1px solid #e2e7df;border-radius:20px}img{max-width:100%;height:auto}h2{margin-top:56px;font-size:26px;border-top:1px solid #e2e7df;padding-top:24px}h3{margin-top:30px;color:#19654b}a{color:#19654b}pre{background:#edf4ee;padding:22px;border-radius:12px;overflow:auto;font-size:14px;line-height:1.7}code{font-family:ui-monospace,monospace}table{border-collapse:collapse;width:100%;font-size:14px;margin:20px 0}th,td{padding:14px;border:1px solid #e2e7df;vertical-align:top}th{background:#edf4ee}table img{max-height:500px;object-fit:contain}em{color:#76817b;font-size:13px}@media(max-width:720px){main{margin:12px;padding:20px}table{display:block;overflow:auto}h2{font-size:23px}}</style><main><p align="center"><img src="docs/media/hero.svg" alt="Jev Phone — 描述目标，让手机点击。" width="100%"></p><p align="center"><b>独立 Python SDK</b> · 三端真机／虚拟机 · 单步与多步点击 · 当前版本 0.1.0</p>
+<p align="center"><a href="#开始使用">开始使用</a> · <a href="#它怎样工作">执行流程</a> · <a href="#三端接入">三端接入</a> · <a href="#体验-demo">体验 Demo</a></p><h2 id="让模型选编号，让设备完成点击">让模型选编号，让设备完成点击</h2>
+<p>Jev Phone 把已经明确的语义点击目标，绑定到当前设备画面中的可执行区域。系统树提供几何位置，截图补充视觉语义；模型只在当帧编号、<code>NOT_FOUND</code> 和 <code>UNCERTAIN</code> 中选择，平台驱动完成坐标点击。</p>
+<p>你可以只调用一步，也可以提交一段内容。SDK 按标点和换行拆步，每一步只请求当前目标，沿用 V3 已调的图片对比衔接，执行到完成或失败停止。外部 AI、Planner、脚本和业务系统都可以接入，不依赖 AI Phone、数据库或网页。</p>
+<h3 id="点击通道的实际画面">点击通道的实际画面</h3>
+<p><img src="docs/media/click-in-action.gif" alt="实际手机点击片段"></p>
+<p><em>来自本地既有 AI Phone / Jev 集成实验的视频，裁出手机操作区域；原速播放。本片展示实际操作过程，不是独立 SDK 的速度基准。</em></p>
+<h2 id="它怎样工作">它怎样工作</h2>
+<p><img src="docs/media/flow.svg" alt="执行流程"></p>
+<p><strong>整段输入 → 符号拆步 → 当前目标定位与点击 → 图片对比衔接 → 下一步。</strong></p>
+<p><img src="docs/media/grounding.svg" alt="节点几何与视觉语义绑定"></p>
+<p>树给出区域，画面表达外观，编号将模型选择绑定到可执行坐标。编号每步重新生成；模型不接收整段任务或之前步骤。</p>
+<h2 id="开始使用">开始使用</h2>
+<p>需要 Python 3.10+。克隆仓库或解压交付包后安装：</p>
+<pre><code class="language-sh">python3 -m venv .venv
+.venv/bin/pip install -e &#39;.[android]&#39;
+</code></pre>
+<pre><code class="language-python">from getpass import getpass
+from jev_phone import AndroidClicker, RunFailure
+
+with AndroidClicker(&quot;YOUR_ADB_SERIAL&quot;, getpass(&quot;OpenRouter Key: &quot;)) as phone:
+    try:
+        report = phone.run(&quot;点击显示与亮度；点击护眼模式&quot;)
+        print(report[&quot;results&quot;])
+        print(report[&quot;transitions&quot;])
+    except RunFailure as error:
+        print(error.report)  # 已完成结果、失败步骤；后续不执行
+</code></pre>
+<p>只需一步时，使用 <code>phone.click(&quot;点击显示与亮度&quot;)</code>。<code>run()</code> 按中英文逗号、分号、句号、问号、感叹号和换行机械切分，最多20步；每段只表达一个点击目标。标点位于目标名字内部时也会切分。</p>
+<h2 id="三端接入">三端接入</h2>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th>真机／虚拟机</th>
+<th>安装</th>
+<th>调用入口</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Android</td>
+<td>均已贯通</td>
+<td><code>pip install -e &#39;.[android]&#39;</code></td>
+<td><code>AndroidClicker(serial, api_key)</code></td>
+</tr>
+<tr>
+<td>iOS</td>
+<td>均已贯通</td>
+<td><code>pip install -e .</code></td>
+<td><code>IOSClicker(wda_url, api_key)</code></td>
+</tr>
+<tr>
+<td>HarmonyOS</td>
+<td>均已贯通</td>
+<td><code>pip install -e &#39;.[harmony]&#39;</code></td>
+<td><code>HarmonyClicker(serial, api_key)</code></td>
+</tr>
+</tbody></table>
+<table><tr><th>Android · 真机／虚拟机</th><th>iOS · 真机／虚拟机</th><th>HarmonyOS · 真机／虚拟机</th></tr><tr><td align="center"><img src="docs/media/android-grounding.png" width="240" alt="安卓编号图"></td><td align="center"><img src="docs/media/ios-grounding.png" width="240" alt="iOS编号图"></td><td align="center"><img src="docs/media/harmony-grounding.png" width="240" alt="鸿蒙编号图"></td></tr></table><p><em>沿用 Demo 的三张原始编号图，不改图；图片分别来自安卓真机、iOS虚拟机、鸿蒙虚拟机的历史实验。平台标题表示当前 SDK 已贯通的支持范围。</em></p>
+<p>安卓准备 ADB / UiAutomator2，iOS 由使用者准备 WDA，鸿蒙准备 HDC / UITest。SDK 不管理签名、设备池和虚拟机生命周期。详细步骤见 <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">三端设备准备</a>。</p>
+<h3 id="不同设备同时执行">不同设备同时执行</h3>
+<pre><code class="language-sh">.venv/bin/pip install -e &#39;.[android,harmony]&#39;
+.venv/bin/python examples/parallel.py examples/devices.json
+</code></pre>
+<p>修改配置中的设备编号、WDA地址和目标序列。不同设备并行，同设备按顺序执行；每台设备的候选、画面和结果独立。同进程的同设备调用共享锁，跨进程设备占用由接入方协调。</p>
+<h2 id="为每一步保留清楚的结果">为每一步保留清楚的结果</h2>
+<ul>
+<li><code>results</code>：目标、选中编号、截图像素坐标、平台、设备和分段耗时。</li>
+<li><code>transitions</code>：步骤间图片对比耗时、采样次数与返回状态。</li>
+<li><code>on_event</code>：观察、编号图、选择、点击返回和步骤衔接事件。</li>
+<li><code>RunFailure.report</code>：保留已完成结果与失败步骤，停止后续执行。</li>
+</ul>
+<p>图片对比参数沿用 V3：安卓100ms、鸿蒙0ms、iOS200ms额外采样间隔。稳定末帧直接用于下一步，不重复截图，不在每步结束后追加展示截图。模型请求往返与组件自身处理分别计时，整段耗时包含步骤衔接。</p>
+<h2 id="体验-demo">体验 Demo</h2>
+<p>Demo 是 SDK 的一个使用者，保留安卓只读镜像、输入、逐步日志与实际模型编号图。外部程序使用 SDK 无需启动 Demo。</p>
+<pre><code class="language-sh">.venv/bin/pip install -e &#39;.[demo]&#39;
+.venv/bin/jev-phone-demo
+</code></pre>
+<p>打开 <code>http://127.0.0.1:8765/</code>，选择安卓设备、填写 Key，点击“准备并连接”。Demo 镜像需要本机已有 <code>adb</code>、<code>scrcpy</code>、<code>ffmpeg</code>。右上角“技术与接入说明”展示组件结构与接入方式。</p>
+<p>模型支持 OpenRouter 多模态 Decisions 和 OpenAI 官方 Decisions；用 <code>provider=&quot;openai&quot;</code> 选择官方通道，两种 Key 不可混用。Demo 刷新后清除 Key 和模型连接；SDK 示例从环境变量或终端隐藏输入获取 Key，不随代码分发。</p>
+<h2 id="接入资料">接入资料</h2>
+<ul>
+<li><a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">SDK 接入指南</a>：公开接口、事件、计时、结果与失败处理。</li>
+<li><a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">三端设备准备</a>：ADB、WDA、HDC 环境与连接。</li>
+<li><a href="docs/%E9%AA%8C%E8%AF%81%E6%A6%82%E8%A7%88.md">验证概览</a>：六种设备组合与当前能力范围。</li>
+<li><a href="examples/click.py">单设备示例</a>、<a href="examples/parallel.py">并行示例</a>、<a href="examples/devices.json">配置样例</a>。</li>
+</ul>
+<p>当前提供点击能力；输入、滚动及其他手势由接入方扩展。<code>driver_completed</code> 表示点击驱动返回，业务判断仍由调用方完成。</p>
+<p>开源仓库：<a href="https://github.com/dongxinsuperman/jev-phone">dongxinsuperman/jev-phone</a>。采用 <a href="LICENSE">MIT许可证</a>；当前尚未发布到PyPI。</p>
+</main></html>

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jev-phone"
+version = "0.1.0"
+license = {file = "LICENSE"}
+authors = [{name = "Dongxin"}]
+description = "Experimental visual finite-choice phone clicking component"
+requires-python = ">=3.10"
+dependencies = ["httpx>=0.28", "Pillow>=10"]
+
+[project.optional-dependencies]
+android = ["uiautomator2==3.7.0"]
+harmony = ["hmdriver2==1.4.4"]
+demo = ["uiautomator2==3.7.0", "fastapi>=0.115", "uvicorn>=0.30"]
+
+[project.scripts]
+jev-phone-demo = "jev_phone_demo.app:main"
+
+[tool.setuptools.package-data]
+jev_phone = ["step_rules.json"]
+jev_phone_demo = ["web/*", "web/media/*"]
+
+[tool.setuptools.packages.find]
+include = ["jev_phone", "jev_phone.adapters*", "jev_phone_demo"]
+
+[project.urls]
+Repository = "https://github.com/dongxinsuperman/jev-phone"
+Issues = "https://github.com/dongxinsuperman/jev-phone/issues"
