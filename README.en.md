@@ -21,13 +21,33 @@ Complete step time includes capture, candidate processing, the model round trip,
 
 ![Channel processing and timing](docs/media/readme/timing.en.png)
 
-![Visual grounding and action binding](docs/media/readme/binding.en.png)
+## How it works: Jev chooses, the SDK executes
+
+The current multimodal Jev integration uses a **finite-choice decision interface**. It interprets the image and selects a supplied candidate; it does not directly return a device action or executable tap coordinates through this integration. The SDK therefore bridges the model's choice to an actual device operation.
+
+The component obtains actionable element bounds from the UI tree, uses their four corners to draw rectangles on the screenshot, and assigns IDs. Jev receives the current target and annotated image and returns an ID. The SDK looks up that element, computes its center, and asks the platform driver to tap it. Bounds are stored as the upper-left and lower-right coordinates, which determine all four corners.
+
+![From a semantic target to a numbered choice and a device tap](docs/media/readme/target-to-tap.en.svg)
 
 ## Why combine the UI tree and screenshot?
 
-UI trees describe bounds and attributes, but an icon may have no useful label, and internal names may differ from visible content. A screenshot reveals appearance, but recognition still needs an executable location. Combining them lets the model interpret the visible target while the SDK binds its choice to a known region.
+The rectangle gets its geometry from the UI tree, while the screenshot supplies visible text, icons, and appearance. A node can have an empty label yet display an avatar. In that case, Jev identifies the avatar in the image and chooses its ID; the SDK uses the same ID to recover the known bounds. This binds a multimodal choice to an executable element.
 
 ![Geometry and visual semantics](docs/media/readme/geometry.en.png)
+
+## Platform support and device preparation
+
+Three adapters are implemented: Android uses UiAutomator2, iOS uses WDA / XCTest, and HarmonyOS uses UITest / hmdriver2. They normalize hierarchies, screenshots, display dimensions, and taps into the same candidate-selection flow. iOS also maps screenshot pixels to WDA points. The SDK supports physical devices and emulators, with single and sequential taps through the same interface.
+
+Before use, prepare an authorized, unlocked device and its platform service, along with the appropriate model credentials:
+
+| Platform | Preparation |
+|---|---|
+| Android | ADB recognizes the device; USB debugging is authorized and UiAutomator2 can run. |
+| iOS | Developer Mode and trust are configured on the physical device; a signed, running WDA service is reachable. |
+| HarmonyOS | HDC recognizes the authorized device and UITest / hmdriver2 can access it. |
+
+[Device preparation guide, Chinese](docs/三端设备准备.md). The original three-platform figures below show numbered regions and their execution binding.
 
 ![Three-platform visual grounding and execution evidence](docs/media/readme/platforms.en.png)
 

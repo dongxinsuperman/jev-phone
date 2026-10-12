@@ -9,10 +9,37 @@
 <p>Local candidate processing, annotation, and encoding took <strong>15–50ms</strong> in the existing Android experiment. The non-model round had a <strong>620ms</strong> median and a <strong>493–729ms</strong> range across nine runs of one navigation sample. These measurements exclude model requests, initialization, and screen settling.</p>
 <p>Complete step time includes capture, candidate processing, the model round trip, the tap, and the transition following that step. <a href="docs/%E6%BC%94%E7%A4%BA%E8%80%97%E6%97%B6%E6%98%8E%E7%BB%86.md">Full stage-by-stage records, Chinese</a>.</p>
 <p><img src="docs/media/readme/timing.en.png" alt="Channel processing and timing"></p>
-<p><img src="docs/media/readme/binding.en.png" alt="Visual grounding and action binding"></p>
+<h2>How it works: Jev chooses, the SDK executes</h2>
+<p>The current multimodal Jev integration uses a <strong>finite-choice decision interface</strong>. It interprets the image and selects a supplied candidate; it does not directly return a device action or executable tap coordinates through this integration. The SDK therefore bridges the model&#39;s choice to an actual device operation.</p>
+<p>The component obtains actionable element bounds from the UI tree, uses their four corners to draw rectangles on the screenshot, and assigns IDs. Jev receives the current target and annotated image and returns an ID. The SDK looks up that element, computes its center, and asks the platform driver to tap it. Bounds are stored as the upper-left and lower-right coordinates, which determine all four corners.</p>
+<p><img src="docs/media/readme/target-to-tap.en.svg" alt="From a semantic target to a numbered choice and a device tap"></p>
 <h2>Why combine the UI tree and screenshot?</h2>
-<p>UI trees describe bounds and attributes, but an icon may have no useful label, and internal names may differ from visible content. A screenshot reveals appearance, but recognition still needs an executable location. Combining them lets the model interpret the visible target while the SDK binds its choice to a known region.</p>
+<p>The rectangle gets its geometry from the UI tree, while the screenshot supplies visible text, icons, and appearance. A node can have an empty label yet display an avatar. In that case, Jev identifies the avatar in the image and chooses its ID; the SDK uses the same ID to recover the known bounds. This binds a multimodal choice to an executable element.</p>
 <p><img src="docs/media/readme/geometry.en.png" alt="Geometry and visual semantics"></p>
+<h2>Platform support and device preparation</h2>
+<p>Three adapters are implemented: Android uses UiAutomator2, iOS uses WDA / XCTest, and HarmonyOS uses UITest / hmdriver2. They normalize hierarchies, screenshots, display dimensions, and taps into the same candidate-selection flow. iOS also maps screenshot pixels to WDA points. The SDK supports physical devices and emulators, with single and sequential taps through the same interface.</p>
+<p>Before use, prepare an authorized, unlocked device and its platform service, along with the appropriate model credentials:</p>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Preparation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Android</td>
+<td>ADB recognizes the device; USB debugging is authorized and UiAutomator2 can run.</td>
+</tr>
+<tr>
+<td>iOS</td>
+<td>Developer Mode and trust are configured on the physical device; a signed, running WDA service is reachable.</td>
+</tr>
+<tr>
+<td>HarmonyOS</td>
+<td>HDC recognizes the authorized device and UITest / hmdriver2 can access it.</td>
+</tr>
+</tbody></table>
+<p><a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">Device preparation guide, Chinese</a>. The original three-platform figures below show numbered regions and their execution binding.</p>
 <p><img src="docs/media/readme/platforms.en.png" alt="Three-platform visual grounding and execution evidence"></p>
 <h2>Independent SDK integration</h2>
 <p>Add phone taps to your existing program: prepare the device service and model credentials, create a Clicker for the target platform, then call <code>click(target)</code> for one tap or <code>run(text)</code> for a sequence. The SDK returns selected regions, coordinates, driver status, and stage timing so your system can continue its workflow.</p>
