@@ -1,0 +1,23 @@
+{
+  "example": "demo-hard-challenge",
+  "steps": [
+    "打开第一个题目右侧的黄色铅笔",
+    "选择弹窗最右侧的橙色难度卡片",
+    "点击开始挑战"
+  ],
+  "recognition_ms": [
+    1944.83,
+    1025.65,
+    765.28
+  ],
+  "click_chain_ms": [
+    2455.41,
+    1346.69,
+    1077.51
+  ],
+  "sequence_ms": 6570.28,
+  "capture_seconds": 8.782,
+  "playback": "original timestamps, no speed-up",
+  "requirement": "each model round-trip below 2000ms",
+  "terminal_state": "difficulty=hard"
+}

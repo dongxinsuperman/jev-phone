@@ -1,0 +1,23 @@
+{
+  "example": "demo-section-switch",
+  "steps": [
+    "点击集合间的基本关系",
+    "点击集合的基本运算",
+    "点击右上方黄色铅笔打开练习设置"
+  ],
+  "recognition_ms": [
+    827.78,
+    693.05,
+    1999.53
+  ],
+  "click_chain_ms": [
+    1305.07,
+    992.42,
+    2328.37
+  ],
+  "sequence_ms": 11554.17,
+  "capture_seconds": 14.275,
+  "playback": "original timestamps, no speed-up",
+  "requirement": "each model round-trip below 2000ms",
+  "terminal_state": "third-section-settings"
+}
