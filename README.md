@@ -8,8 +8,6 @@
 
 [观看视频](docs/media/demo-hard-challenge.mp4) · [计时记录](docs/media/demo-hard-challenge.json)
 
-![Jev Phone](docs/media/hero.svg)
-
 ![点击演示](docs/media/site-demo.png)
 
 ![章节切换与练习设置](docs/media/demo-section-switch.gif)
