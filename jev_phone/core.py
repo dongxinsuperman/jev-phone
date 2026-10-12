@@ -139,8 +139,6 @@ class PhoneClicker:
                         report['transitions'].append(transition)
                         event({'phase': 'transition_completed', 'message': '图片对比已返回',
                                'transition': transition})
-                        if not settled.stable:
-                            raise ClickFailure('步骤衔接图片对比超时，后续步骤已停止。')
                         frame = settled.bytes_
                     event({'phase': 'start', 'message': target})
                     result = self._click(target, event, frame)

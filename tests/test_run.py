@@ -44,14 +44,15 @@ class SequenceContract(unittest.TestCase):
         self.assertEqual(len(adapter.clicked),1)
         self.assertEqual(adapter.frames,2)
 
-    def test_transition_timeout_does_not_click_next_step(self):
+    def test_transition_timeout_returns_last_frame_and_continues_like_v3(self):
         adapter=SequenceAdapter()
         with PhoneClicker(adapter,'test') as phone:
             phone.decisions.request=lambda *args:{'answers':{'node':{'choice':'N1'}}}
             with patch('jev_phone.stability.policy_for_platform',return_value=FastStabilityPolicy(timeout_s=0)):
-                with self.assertRaises(RunFailure) as caught:phone.run('A;B')
-        self.assertEqual(len(adapter.clicked),1)
-        self.assertEqual(caught.exception.report['failed_step'],2)
+                report=phone.run('A;B')
+        self.assertEqual(len(adapter.clicked),2)
+        self.assertEqual(report['status'],'completed')
+        self.assertFalse(report['transitions'][0]['stable'])
 
     def test_one_step_has_no_transition_capture(self):
         adapter=SequenceAdapter()
