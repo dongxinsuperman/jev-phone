@@ -19,5 +19,5 @@
   "capture_seconds": 14.275,
   "playback": "original timestamps, no speed-up",
   "requirement": "each model round-trip below 2000ms",
-  "terminal_state": "third-section-settings"
+  "terminal_state": "第三小节与选择难度弹窗"
 }
