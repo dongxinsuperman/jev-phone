@@ -1,279 +1,176 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev Phone · 官网与接入说明</title><style>body{margin:0;background:#f3f4ef;color:#1b2824;font:16px/1.85 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}main{max-width:1100px;margin:40px auto;padding:32px 48px;background:white;border:1px solid #e2e7df;border-radius:20px}img{max-width:100%;height:auto}h2{margin-top:56px;font-size:26px;border-top:1px solid #e2e7df;padding-top:24px}h3{margin-top:30px;color:#19654b}a{color:#19654b}pre{background:#edf4ee;padding:22px;border-radius:12px;overflow:auto;font-size:14px;line-height:1.7}code{font-family:ui-monospace,monospace}table{border-collapse:collapse;width:100%;font-size:14px;margin:20px 0}th,td{padding:14px;border:1px solid #e2e7df;vertical-align:top}th{background:#edf4ee}table img{max-height:500px;object-fit:contain}em{color:#76817b;font-size:13px}@media(max-width:720px){main{margin:12px;padding:20px}table{display:block;overflow:auto}h2{font-size:23px}}</style><main><h1 id="jev-phone">Jev Phone</h1>
-<p><strong>多模态决策驱动的三端视觉交互通道。</strong></p>
-<p><img src="docs/media/demo-hard-challenge.gif" alt="当前 Demo 首页：困难挑战三步原速实录"></p>
-<p><strong>当前 Demo 首页，真实安卓手机，原速连续执行。</strong> 打开练习设置 → 选择最右侧橙色“困难”卡片 → 开始挑战。右上角秒表按原始页面帧时间戳计时，执行期间没有加速或删等待；最终题目确认显示“难度：困难”。</p>
+<!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev Phone · zh</title><style>body{max-width:900px;margin:48px auto;padding:0 32px 64px;font:16px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#1f2328;background:white}img{max-width:100%;height:auto}h1{font-size:36px}h2{font-size:25px;border-bottom:1px solid #d1d9e0;padding-bottom:9px;margin-top:40px}h3{margin-top:28px}a{color:#0969da;text-decoration:none}a:hover{text-decoration:underline}table{border-collapse:collapse;width:100%;margin:20px 0;font-size:14px}td,th{border:1px solid #d1d9e0;padding:12px 14px}tr:nth-child(2n){background:#f6f8fa}pre{background:#f6f8fa;padding:20px;overflow:auto;border-radius:8px;font-size:14px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,monospace}details{border:1px solid #d1d9e0;border-radius:8px;padding:14px 18px;margin:22px 0}summary{cursor:pointer;color:#185f47}details img{display:block;margin:18px auto}hr{border:0;border-top:1px solid #d1d9e0;margin:36px 0}@media(max-width:600px){body{padding:0 18px}table{font-size:12px}td,th{padding:8px}}</style><body><h1 align="center">Jev Phone</h1>
+<p align="center"><strong>毫秒级本地处理的三端多模态点击 SDK</strong></p>
+<p align="center">Android · iOS · HarmonyOS<br>真机与虚拟机 · 单步与连续点击 · Python · MIT</p>
+<p align="center"><a href="README-preview.html">中文</a> · <a href="README-preview.en.html">English</a> · <a href="#快速接入">快速接入</a> · <a href="#工作原理">工作原理</a> · <a href="#性能与计时">性能与计时</a></p><p>Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测试平台和脚本提供可独立调用的手机点击能力。<strong>调用方给出点击目标，SDK 完成当前画面的定位和执行。</strong></p>
+<p>它承接从“知道要操作什么”到“实际点到设备上”的这一段。你可以继续使用自己的任务规划、缓存和业务判断，不需要引入完整 AI Phone 框架。</p>
 <table>
 <thead>
 <tr>
-<th>当前步骤</th>
-<th align="right">模型识别请求往返</th>
+<th align="center">本地处理</th>
+<th align="center">平台接入</th>
+<th align="center">执行方式</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>打开练习设置</td>
-<td align="right"><strong>1944.83ms</strong></td>
+<td align="center"><strong>15–50ms</strong> 候选处理、画框与编码¹</td>
+<td align="center"><strong>Android / iOS / HarmonyOS</strong></td>
+<td align="center"><strong><code>click()</code> / <code>run()</code></strong></td>
 </tr>
 <tr>
-<td>选择橙色困难卡片</td>
-<td align="right"><strong>1025.65ms</strong></td>
-</tr>
-<tr>
-<td>开始挑战</td>
-<td align="right"><strong>765.28ms</strong></td>
+<td align="center">设备通道与模型请求分别计时</td>
+<td align="center">真机与虚拟机</td>
+<td align="center">单步调用或按标点、换行连续执行</td>
 </tr>
 </tbody></table>
-<p>三个步骤的模型识别均低于2秒；整段执行6570.28ms，包含截图、点击及V3步骤衔接。录像保留完成后的短暂停留。<a href="docs/media/demo-hard-challenge.mp4">查看原速视频</a> · <a href="docs/media/demo-hard-challenge.json">计时记录</a></p>
-<p align="center"><img src="docs/media/hero.svg" width="100%" alt="描述目标，让手机点击。"></p><p align="center"><b>Android · iOS · HarmonyOS</b>　／　<b>真机 · 虚拟机</b><br>独立 Python SDK　·　单步与多步点击　·　MIT 开源</p><p align="center"><a href="#第一页--描述目标让手机点击">点击演示</a> · <a href="#第二页--技术与接入说明">技术与接入说明</a> · <a href="#05--独立组件接入">安装与调用</a> · <a href="#06--毫秒级通道处理与分段计时">毫秒计时</a></p><hr>
-<h1 id="第一页--描述目标让手机点击">第一页 / 描述目标，让手机点击。</h1>
-<p><strong>A TARGET. A CHOICE. A TAP.</strong></p>
-<p>真实画面生成候选，模型只选编号，组件完成点击。</p>
-<p><img src="docs/media/site-demo.png" alt="Jev Phone 官网点击演示页"></p>
-<h3 id="另一个实际例子：浏览章节并打开设置">另一个实际例子：浏览章节并打开设置</h3>
-<p><img src="docs/media/demo-section-switch.gif" alt="章节浏览三步原速实录"></p>
-<p>“看看集合间的基本关系 → 转到集合的基本运算 → 打开练习设置”。三步模型识别分别827.78、693.05、1999.53ms，均低于2秒；保留完整图片对比衔接。<a href="docs/media/demo-section-switch.mp4">原速视频</a> · <a href="docs/media/demo-section-switch.json">计时记录</a></p>
-<p>这一页把一条点击链路直接展开给你看：连接手机和模型 → 输入目标 → 查看实际手机画面 → 查看每步编号图、模型选择、坐标与耗时。右上角“技术与接入说明”翻到下面的技术页。</p>
-<h2 id="01--connection-·-模型通道">01 / CONNECTION · 模型通道</h2>
-<p>支持 <strong>OpenRouter 多模态 Decisions</strong> 与 <strong>OpenAI 官方 Decisions</strong>，通过协议适配归一化模型结果。</p>
-<p>选择通道、填写对应 API Key、选择安卓设备，点击“准备并连接”。准备阶段验证模型通道，执行阶段复用设备服务和模型客户端。</p>
-<ul>
-<li>OpenRouter：<code>openai/gpt-6-luna-decisions</code>。</li>
-<li>OpenAI 官方：<code>gpt-6-luna</code>，调用时使用 <code>provider=&quot;openai&quot;</code>。</li>
-<li>Key 仅在本次页面中使用，密码掩码展示；刷新后清除连接与密钥，需重新填写。</li>
-</ul>
-<h2 id="android-·-安卓实时镜像">ANDROID · 安卓实时镜像</h2>
-<p>真实手机画面与执行过程并排展示。镜像为只读视频通道，由 scrcpy 与 ffmpeg 承接；实际操作由 SDK 点击组件执行。</p>
-<p>镜像与定位截图分工明确：镜像用于人查看，模型使用每步实际采集和标注的截图。当前网页体验端为安卓，SDK 同时提供三端接入。</p>
-<h2 id="input-·-点击步骤">INPUT · 点击步骤</h2>
-<p>可以输入一段内容，按约定的中英文标点和换行拆成多个点击步骤：</p>
-<pre><code class="language-text">点击底部导航栏的星球；
-点击底部导航栏的我的
-</code></pre>
-<p><strong>每一步只传当前这一句目标。</strong> 不把整段任务、上一句或执行历史一起交给模型。当前步骤完成后，用图片对比衔接下一步，并复用对比返回的最后一帧；定位或点击失败停止后续步骤。对比到4秒预算仍未确认稳定时，沿用V3返回最后一帧继续，不额外拦截。</p>
-<p><img src="docs/media/flow.svg" alt="多步执行与衔接"></p>
-<p>SDK 和 Demo 使用同一套执行流程。SDK 的 <code>run()</code> 接收整段内容，自动拆步、遍历执行并汇总结果；单步 <code>click()</code> 继续保留。</p>
-<h2 id="execution-·-执行日志">EXECUTION · 执行日志</h2>
-<p>日志逐步展示：</p>
-<table>
-<thead>
-<tr>
-<th>阶段</th>
-<th>你能看到什么</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>目标</td>
-<td>当前这一句点击目标</td>
-</tr>
-<tr>
-<td>观察</td>
-<td>当前系统树与设备截图</td>
-</tr>
-<tr>
-<td>编号图</td>
-<td>本步生成的候选数量、实际发给模型的图片</td>
-</tr>
-<tr>
-<td>选择</td>
-<td>模型选中的编号及其绑定坐标</td>
-</tr>
-<tr>
-<td>点击返回</td>
-<td>平台驱动完成回执与单步耗时</td>
-</tr>
-<tr>
-<td>步骤衔接</td>
-<td>图片对比返回状态、采样次数与衔接耗时</td>
-</tr>
-</tbody></table>
-<p>日志左侧记录本轮累计毫秒；模型请求往返与组件自身处理分别计时。当前不再追加每步结束后的展示截图。</p>
-<h2 id="model-input-·-每步编号图">MODEL INPUT · 每步编号图</h2>
-<p><strong>展示的是实际发送给模型的图片。</strong> 每张图上的红框与编号来自当前系统层级，并绑定到对应区域。点击缩略图，可以回看该步的目标、选中编号、坐标与分段耗时。</p>
-<p>三端图片见下方“视觉定位与执行验证”。这些图将视觉识别、有限选择与可执行位置放在同一帧中展示。</p>
-<hr>
-<h1 id="第二页--技术与接入说明">第二页 / 技术与接入说明</h1>
-<p><strong>MULTIMODAL DECISION × VISUAL GROUNDING × DEVICE EXECUTION</strong></p>
-<h2 id="jev-phone-·-多模态决策驱动的三端视觉交互通道">Jev Phone · 多模态决策驱动的三端视觉交互通道</h2>
-<p>通过区域标注、有限选项决策与平台驱动，将语义目标映射为 Android、iOS、HarmonyOS 设备上的点击操作。独立组件供外部系统接入，交互式 Demo 展示执行过程与实测证据。</p>
-<table>
-<thead>
-<tr>
-<th>视觉定位</th>
-<th>决策</th>
-<th>执行</th>
-<th>当前能力</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>区域标注与索引</td>
-<td>多模态有限选择</td>
-<td>跨平台驱动适配</td>
-<td>单步与多步点击</td>
-</tr>
-</tbody></table>
-<details>
-<summary><b>查看官网第二页的完整原貌</b></summary><p><img src="docs/media/site-guide.png" alt="技术与接入说明完整页面"></p>
-</details><h2 id="core--视觉目标定位与设备动作绑定">CORE / 视觉目标定位与设备动作绑定</h2>
-<table><tr><th>目标输入</th><th>视觉定位与执行组件</th><th>多模态决策与驱动执行</th></tr><tr><td><b>外部应用、脚本与任务系统</b><br><br>调用方提供语义点击目标，SDK 负责顺序执行。</td><td><b>层级采集 · 区域筛选 · 平台适配<br>区域索引 · 决策绑定 · 坐标映射</b><br><br>基于系统层级构建候选动作空间，以区域索引约束模型输出。</td><td><b>视觉识别 → 选项决策 → 点击执行</b><br><br>决策结果绑定当帧区域，由平台驱动执行坐标操作。</td></tr></table><p>这条通道可以接入已有 AI、Planner、缓存或脚本。它承接已明确的点击目标；接在外部技术栈的哪个环节，由使用者决定。</p>
-<p>模型协议为 OpenRouter 多模态 Decisions / OpenAI 官方 Decisions。当前实现使用多模态决策模型；TypeSafe Jev 的原生文本接口属于不同后端。</p>
-<h2 id="01--区域标注与有限动作空间">01 / 区域标注与有限动作空间</h2>
-<table>
-<thead>
-<tr>
-<th>01 · 语义目标</th>
-<th>02 · 系统树＋截图</th>
-<th>03 · 区域标注与索引</th>
-<th>04 · 多模态有限决策</th>
-<th>05 · 坐标点击</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>“点击左上角头像”</td>
-<td>观察当前设备状态</td>
-<td>筛选候选区域，生成红框和编号</td>
-<td><code>N02</code> / <code>NOT_FOUND</code> / <code>UNCERTAIN</code></td>
-<td>编号映射到区域中心，由驱动执行</td>
-</tr>
-</tbody></table>
-<p>每步独立采集并生成区域索引。请求包含当前目标、候选属性和标注截图；设备服务与网络客户端持续复用。模型选择被限制在当前候选空间中，结果直接绑定到当前帧中的执行区域。</p>
-<h2 id="02--几何约束与视觉语义融合">02 / 几何约束与视觉语义融合</h2>
-<p><img src="docs/media/grounding.svg" alt="官网几何约束与视觉语义图示"></p>
-<p>系统节点提供几何区域与属性，截图补充文本、图标及外观语义。区域索引将视觉识别结果关联到可执行位置。</p>
-<p>例如节点 <code>N02</code> 的文字可能为空，但画面中明确显示头像。树提供它的边界，模型依据画面识别头像并选择 <code>N02</code>，组件将这个选择映射成点击坐标。</p>
-<p>这是结构示意；实际模型输入与执行结果在 Demo 中逐步展示。</p>
-<h2 id="03--调用方与组件的职责边界">03 / 调用方与组件的职责边界</h2>
-<table>
-<thead>
-<tr>
-<th>调用方负责</th>
-<th>Jev Phone 负责</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>业务目标、目标顺序、业务判断</td>
-<td>符号拆步、顺序执行、步骤衔接</td>
-</tr>
-<tr>
-<td>应用逻辑、测试流程及任务编排</td>
-<td>系统层级与截图采集、候选区域与编号</td>
-</tr>
-<tr>
-<td>提供已准备好的设备服务与模型 Key</td>
-<td>多模态有限选择、坐标映射与平台点击</td>
-</tr>
-<tr>
-<td>接收结果并组织自己的后续流程</td>
-<td>返回事件、编号图、坐标和毫秒计时；失败停止</td>
-</tr>
-</tbody></table>
-<p>SDK 独立于演示界面和 AI Phone。Demo 是它的使用者；接入自己的程序不需要网页或数据库。</p>
-<h2 id="04--三端视觉定位与执行验证">04 / 三端视觉定位与执行验证</h2>
-<p><strong>Android、iOS、HarmonyOS 的真机／虚拟机均已贯通。</strong></p>
-<table><tr><th>Android · 真机／虚拟机</th><th>iOS · 真机／虚拟机</th><th>HarmonyOS · 真机／虚拟机</th></tr><tr><td align="center"><img src="docs/media/android-grounding.png" width="260" alt="Android编号候选N31"></td><td align="center"><img src="docs/media/ios-grounding.png" width="260" alt="iOS编号候选N25"></td><td align="center"><img src="docs/media/harmony-grounding.png" width="260" alt="HarmonyOS编号候选N47"></td></tr><tr><td><b>Android · 选择 N31</b><br><br>UiAutomator2 系统树＋截图 → 区域标注 → 模型选择 → 坐标点击。区域索引根据当帧系统层级动态生成。</td><td><b>iOS · 选择 N25</b><br><br>WDA / XCTest 快照 → point 与截图 pixel 映射 → 统一候选 → 视觉选择。系统名称与画面文字不一致时，图像补充语义。</td><td><b>HarmonyOS · 选择 N47</b><br><br>UITest / hmdriver2 层级 → 图片子区域与父布局边界适配 → 编号图 → 驱动执行。</td></tr></table><p>沿用官网三张原始编号图，图片不改。图片分别来自安卓真机、iOS 虚拟机、鸿蒙虚拟机的既有实验，共同目标为点击底部“学习”；平台标题表示当前 SDK 的真机／虚拟机支持范围。</p>
-<p>三端共享定位流程，通过平台适配处理层级、坐标与驱动差异。完整环境准备见 <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">三端设备准备</a>，支持范围见 <a href="docs/%E9%AA%8C%E8%AF%81%E6%A6%82%E8%A7%88.md">验证概览</a>。</p>
-<h2 id="05--独立组件接入">05 / 独立组件接入</h2>
-<h3 id="安装">安装</h3>
-<p>Python 3.10+，克隆仓库后按平台安装：</p>
+<p>¹ 前期安卓实验记录，完整口径见<a href="#%E6%80%A7%E8%83%BD%E4%B8%8E%E8%AE%A1%E6%97%B6">性能与计时</a>。</p>
+<p><img src="docs/media/site-demo.png" alt="Jev Phone Demo：手机镜像、执行日志与模型编号图"></p>
+<p align="center">Demo 直接调用同一 SDK：左侧查看手机，中间查看执行过程，右侧查看模型实际接收的编号图。</p><h2 id="快速接入">快速接入</h2>
+<p>Python 3.10+。准备已连接的设备与对应模型 Key，然后从仓库安装：</p>
 <pre><code class="language-sh">git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
 python3 -m venv .venv
-
-# Android
 .venv/bin/pip install -e &#39;.[android]&#39;
-
-# iOS：连接你已准备好的 WDA
-.venv/bin/pip install -e .
-
-# HarmonyOS
-.venv/bin/pip install -e &#39;.[harmony]&#39;
 </code></pre>
-<h3 id="一段目标直接执行">一段目标直接执行</h3>
 <pre><code class="language-python">from getpass import getpass
-from jev_phone import AndroidClicker, RunFailure
+from jev_phone import AndroidClicker
 
 with AndroidClicker(
     serial=&quot;YOUR_DEVICE_SERIAL&quot;,
     api_key=getpass(&quot;OpenRouter Key: &quot;),
-    provider=&quot;openrouter&quot;,  # 官方通道填 openai
+    provider=&quot;openrouter&quot;,
 ) as phone:
-    try:
-        report = phone.run(&quot;点击底部导航栏的星球；点击底部导航栏的我的&quot;)
-        print(report[&quot;results&quot;])
-        print(report[&quot;transitions&quot;])
-    except RunFailure as error:
-        print(error.report)
+    report = phone.run(&quot;打开默认难度设置；选择中等难度；保存修改&quot;)
+    # 单步：phone.click(&quot;打开默认难度设置&quot;)
+    print(report[&quot;results&quot;])
 </code></pre>
-<p>单步调用：<code>phone.click(&quot;点击底部的我的&quot;)</code>。iOS 使用 <code>IOSClicker(wda_url, api_key)</code>；鸿蒙使用 <code>HarmonyClicker(hdc_serial, api_key)</code>。</p>
-<p><code>run()</code> 按中英文逗号、分号、句号、问号、感叹号及换行机械拆步，最多20步。每段只描述一个点击目标；支持采集、编号图、模型选择、点击返回与步骤衔接事件，使用 <code>on_event</code> 接收。</p>
-<h3 id="多设备并行">多设备并行</h3>
-<pre><code class="language-sh">.venv/bin/pip install -e &#39;.[android,harmony]&#39;
-.venv/bin/python examples/parallel.py examples/devices.json
-</code></pre>
-<p>配置设备编号、WDA地址及每台设备的目标序列。不同设备并行，同设备顺序执行；每台设备的截图、候选和结果独立。公开调用方式、返回字段及失败处理见 <a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">SDK 接入指南</a>。</p>
-<h2 id="06--毫秒级通道处理与分段计时">06 / 毫秒级通道处理与分段计时</h2>
-<p>官网记录了前期安卓常驻 UiAutomator2 实验的毫秒级处理数据：</p>
-<table>
-<thead>
-<tr>
-<th>本地候选处理、画框与编码</th>
-<th>安卓非模型整轮实测中位</th>
-<th>同一导航样本9轮范围</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>约15–50ms</strong></td>
-<td><strong>620ms</strong></td>
-<td><strong>493–729ms</strong></td>
-</tr>
-</tbody></table>
-<p>这组数据不含模型请求、初始化与步骤稳定衔接；是对应实验的记录。首屏秒表实录直接展示当前独立 SDK 和 Demo 的模型定位、步骤衔接与连续点击节奏。</p>
-<table><tr><th>模型请求往返</th><th>组件自身处理</th></tr><tr><td>上传＋网络／网关＋服务处理＋返回</td><td>尺寸／树＋按需截图＋候选画框＋点击</td></tr></table><p><strong>单步总时间 = 模型请求往返 + 组件自身处理。单位均为 ms。</strong></p>
-<p>整段执行另记录步骤间图片对比的耗时、采样次数和状态。不逐步追加结束后截图；下一步直接复用对比末帧。</p>
+<p>每个步骤只描述一个点击目标。<code>run()</code> 按中英文逗号、分号、句号、问号、感叹号及换行拆分，最多20步；每次模型请求只包含当前步骤。</p>
 <table>
 <thead>
 <tr>
 <th>平台</th>
-<th>已对齐的截图／取树／点击通道</th>
-<th>对比额外采样间隔</th>
+<th>安装</th>
+<th>设备连接</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>Android</td>
-<td>UiAutomator2 原生 JPEG、实时显示尺寸、原生树与坐标点击</td>
-<td><strong>100ms</strong></td>
+<td><code>pip install -e &#39;.[android]&#39;</code></td>
+<td><code>AndroidClicker(serial=..., api_key=...)</code></td>
 </tr>
 <tr>
 <td>iOS</td>
-<td>WDA 按需截图、XCTest 文字区域与控件候选、pixel/point 映射、临时缩短点击内部等待并恢复</td>
-<td><strong>200ms</strong></td>
+<td><code>pip install -e .</code></td>
+<td><code>IOSClicker(wda_url=..., api_key=...)</code></td>
 </tr>
 <tr>
 <td>HarmonyOS</td>
-<td>原生 JPEG、UITest <code>captureLayout</code> 直返树、直接点击完成回执</td>
-<td><strong>0ms</strong></td>
+<td><code>pip install -e &#39;.[harmony]&#39;</code></td>
+<td><code>HarmonyClicker(serial=..., api_key=...)</code></td>
 </tr>
 </tbody></table>
-<p>0ms 指不添加采样 sleep，截图本身仍有耗时。客户端空闲连接有效期60秒；模型与网络、页面和设备负载影响实际端到端耗时。</p>
-<h2 id="07--当前能力与实践约定">07 / 当前能力与实践约定</h2>
-<h3 id="运行环境">运行环境</h3>
-<p>SDK 是独立 Python 包。安卓准备 ADB / UiAutomator2，iOS 提供已有 WDA 地址，鸿蒙准备 HDC / UITest；真机与虚拟机共用平台适配。WDA签名、设备池和虚拟机生命周期由使用者准备。</p>
-<h3 id="模型通道">模型通道</h3>
-<p>支持 OpenRouter 多模态 Decisions 与 OpenAI 官方 Decisions，适配不同的请求／返回协议，归一化有限选择结果。对应 Key 不可混用。</p>
-<h3 id="明确边界">明确边界</h3>
-<p>当前交付单步与多步点击，三端真机／虚拟机均已贯通。输入、滚动、长按等动作可由使用者二次开发。业务判断由调用方完成；<code>driver_completed</code> 表示平台驱动返回。</p>
-<h3 id="证据与密钥">证据与密钥</h3>
-<p>Demo 的 Key 仅在当前页面使用，刷新后清除。SDK 示例从环境变量或隐藏终端输入获取 Key。截图与执行记录保存为本地产物，不把 Key、原始日志或个人设备配置上传仓库。</p>
-<h2 id="启动官网-demo">启动官网 Demo</h2>
+<p>支持 OpenRouter 多模态 Decisions 和 OpenAI 官方 Decisions；官方通道使用 <code>provider=&quot;openai&quot;</code> 及对应 Key。当前从源码或 wheel 安装，尚未发布到 PyPI。</p>
+<p><a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">完整接入指南</a> · <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">设备准备</a> · <a href="examples/click.py">单设备示例</a> · <a href="examples/parallel.py">多设备并行</a></p>
+<h2 id="工作原理">工作原理</h2>
+<p>手机的系统树能描述区域位置，但节点文字未必表达图标的含义；截图能展示外观，还需要把识别结果绑定到可执行位置。Jev Phone 把两者结合：<strong>用树确定候选区域，用画面理解目标，让模型选择区域编号，再由驱动执行点击。</strong></p>
+<p><img src="docs/media/modules/grounding.png" alt="系统区域与画面语义共同绑定点击目标"></p>
+<p>候选来自当前帧，模型返回编号、<code>NOT_FOUND</code> 或 <code>UNCERTAIN</code>。SDK 将有效编号映射到区域中心；定位或点击失败时，停止后续步骤并保留已完成结果。</p>
+<details>
+<summary><strong>展开官网图解：动作绑定 · 五步流程 · 职责边界</strong></summary><p><img src="docs/media/modules/core.png" alt="视觉目标定位与设备动作绑定">
+<img src="docs/media/modules/flow.png" alt="区域标注与有限动作空间">
+<img src="docs/media/modules/responsibility.png" alt="调用方与组件的职责边界"></p>
+</details><h3 id="连续步骤怎样衔接">连续步骤怎样衔接</h3>
+<p>截图、尺寸、取树、点击和图片对比通道承接 AI Phone V3 已调实现。步骤间比较画面并复用末帧，避免下一步直接使用动画中的过渡画面；最后一步不增加衔接等待，也不逐步追加结束截图。</p>
+<p>调用方掌握目标顺序、业务断言、缓存和异常处理。SDK 返回候选图、选中编号、坐标、驱动状态与计时；驱动返回表示点击接口完成，业务结果由调用方判断。</p>
+<h2 id="三端视觉定位">三端视觉定位</h2>
+<p>三端共用定位流程，平台适配分别处理层级、截图、坐标单位与驱动。以下是官网编号图中的目标区域，完整原图与适配卡片保留在展开项中。</p>
+<table>
+<thead>
+<tr>
+<th>Android · 真机／虚拟机</th>
+<th>iOS · 真机／虚拟机</th>
+<th>HarmonyOS · 真机／虚拟机</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UiAutomator2</td>
+<td>WDA / XCTest</td>
+<td>UITest / hmdriver2</td>
+</tr>
+<tr>
+<td>原生截图、取树与点击</td>
+<td>按需截图、pixel/point 映射</td>
+<td>原生截图、层级与直接点击回执</td>
+</tr>
+</tbody></table>
+<p><strong>Android · 选择 N31</strong></p>
+<p><img src="docs/media/modules/android-detail.png" alt="Android学习目标区域"></p>
+<p><strong>iOS · 选择 N25</strong></p>
+<p><img src="docs/media/modules/ios-detail.png" alt="iOS学习目标区域"></p>
+<p><strong>HarmonyOS · 选择 N47</strong></p>
+<p><img src="docs/media/modules/harmony-detail.png" alt="HarmonyOS学习目标区域"></p>
+<details>
+<summary><strong>展开三端官网原始卡片与完整编号图</strong></summary><p><img src="docs/media/modules/android.png" alt="Android官网卡片">
+<a href="docs/media/android-grounding.png">查看Android完整编号图</a></p>
+<p><img src="docs/media/modules/ios.png" alt="iOS官网卡片">
+<a href="docs/media/ios-grounding.png">查看iOS完整编号图</a></p>
+<p><img src="docs/media/modules/harmony.png" alt="HarmonyOS官网卡片">
+<a href="docs/media/harmony-grounding.png">查看HarmonyOS完整编号图</a></p>
+<p>原图分别来自安卓真机、iOS虚拟机、鸿蒙虚拟机实验；各平台标题标明当前支持的设备范围。<a href="docs/%E9%AA%8C%E8%AF%81%E6%A6%82%E8%A7%88.md">验证概览</a></p>
+</details><h2 id="性能与计时">性能与计时</h2>
+<p><strong>毫秒级本地处理</strong>描述候选生成、画框与编码等组件处理阶段。每步完整耗时还包含设备采集、模型请求、点击，以及该步后续衔接。性能记录按这些阶段分别列出，避免用模型耗时代替整体耗时。</p>
+<table>
+<thead>
+<tr>
+<th>已有实验数据</th>
+<th>测量范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>15–50ms</strong></td>
+<td>本地候选处理、画框与编码</td>
+</tr>
+<tr>
+<td><strong>620ms</strong> 中位</td>
+<td>安卓非模型整轮</td>
+</tr>
+<tr>
+<td><strong>493–729ms</strong></td>
+<td>同一安卓导航样本9轮非模型耗时范围</td>
+</tr>
+</tbody></table>
+<p>上述数据来自前期常驻 UiAutomator2 实验，不含模型请求、初始化与步骤衔接。<a href="docs/%E6%BC%94%E7%A4%BA%E8%80%97%E6%97%B6%E6%98%8E%E7%BB%86.md">查看完整分段记录</a>：尺寸、取树、截图、候选处理、模型往返、点击、其他开销、衔接与整体步骤。</p>
+<details>
+<summary><strong>展开官网性能图与三端衔接参数</strong></summary><p><img src="docs/media/modules/timing.png" alt="毫秒级通道处理与分段计时"></p>
+<table>
+<thead>
+<tr>
+<th>平台</th>
+<th align="right">额外采样间隔</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Android</td>
+<td align="right">100ms</td>
+</tr>
+<tr>
+<td>iOS</td>
+<td align="right">200ms</td>
+</tr>
+<tr>
+<td>HarmonyOS</td>
+<td align="right">0ms</td>
+</tr>
+</tbody></table>
+<p>截图本身仍有耗时。对比预算耗尽时按 V3 返回最后一帧继续；参数和执行流程保持已调版本。</p>
+</details><h2 id="demo-与能力范围">Demo 与能力范围</h2>
 <pre><code class="language-sh">.venv/bin/pip install -e &#39;.[demo]&#39;
 .venv/bin/jev-phone-demo
 </code></pre>
-<p>本机准备 <code>adb</code>、<code>scrcpy</code>、<code>ffmpeg</code>，打开 <code>http://127.0.0.1:8765/</code>。选择手机与模型通道，填写 Key，准备连接后输入点击步骤。网页提供安卓只读实时镜像、日志与编号图；SDK 三端调用不依赖这个网页。</p>
-<h2 id="接入资料与开源">接入资料与开源</h2>
-<ul>
-<li><a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">SDK 接入指南</a></li>
-<li><a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">三端设备准备</a></li>
-<li><a href="docs/%E9%AA%8C%E8%AF%81%E6%A6%82%E8%A7%88.md">验证概览</a></li>
-<li><a href="examples/click.py">单设备示例</a> · <a href="examples/parallel.py">并行示例</a> · <a href="examples/devices.json">配置样例</a></li>
-<li><a href="LICENSE">MIT 许可证</a> · <a href="NOTICE.md">来源说明</a></li>
-</ul>
-<p>Jev Phone · 多模态有限决策、视觉定位与跨平台动作绑定。当前从 GitHub 源码或 wheel 安装，尚未发布到 PyPI。</p>
-</main></html>
+<p>准备 <code>adb</code>、<code>scrcpy</code>、<code>ffmpeg</code>，打开 <code>http://127.0.0.1:8765/</code>。网页提供安卓只读镜像、执行日志和编号图；三端 SDK 接入不依赖网页。页面刷新清除连接与 Key。</p>
+<p>当前交付 <strong>单步与多步点击</strong>。任务规划、业务断言、输入、滚动、长按、应用启动与设备调度由外部系统承接。使用者准备设备授权、WDA签名与虚拟机；截图和执行记录作为本地产物保存。</p>
+<details>
+<summary><strong>展开官网接入示例与实践说明</strong></summary><p><img src="docs/media/modules/integration.png" alt="独立组件接入">
+<img src="docs/media/modules/practice.png" alt="当前能力与实践说明"></p>
+</details><hr>
+<p><a href="README-preview.html">中文</a> · <a href="README-preview.en.html">English</a> · <a href="docs/media/site-guide.png">完整官网技术原图</a> · <a href="LICENSE">MIT</a> · <a href="NOTICE.md">来源说明</a></p>
+</body></html>
