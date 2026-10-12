@@ -1,112 +1,12 @@
 <!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev Phone · zh</title><style>body{max-width:900px;margin:48px auto;padding:0 32px 64px;font:16px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#1f2328;background:white}img{max-width:100%;height:auto}h1{font-size:36px}h2{font-size:25px;border-bottom:1px solid #d1d9e0;padding-bottom:9px;margin-top:40px}h3{margin-top:28px}a{color:#0969da;text-decoration:none}a:hover{text-decoration:underline}table{border-collapse:collapse;width:100%;margin:20px 0;font-size:14px}td,th{border:1px solid #d1d9e0;padding:12px 14px}tr:nth-child(2n){background:#f6f8fa}pre{background:#f6f8fa;padding:20px;overflow:auto;border-radius:8px;font-size:14px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,monospace}details{border:1px solid #d1d9e0;border-radius:8px;padding:14px 18px;margin:22px 0}summary{cursor:pointer;color:#185f47}details img{display:block;margin:18px auto}hr{border:0;border-top:1px solid #d1d9e0;margin:36px 0}@media(max-width:600px){body{padding:0 18px}table{font-size:12px}td,th{padding:8px}}</style><body><h1 align="center">Jev Phone</h1>
 <p align="center"><strong>毫秒级本地处理的三端多模态点击 SDK</strong></p>
 <p align="center">Android · iOS · HarmonyOS<br>真机与虚拟机 · 单步与连续点击 · Python · MIT</p>
-<p align="center"><a href="README-preview.html">中文</a> · <a href="README-preview.en.html">English</a> · <a href="#性能与计时">性能与计时</a> · <a href="#工作原理">工作原理</a> · <a href="#快速接入">快速接入</a></p><p>Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测试平台和脚本提供可独立调用的手机点击能力。<strong>调用方给出点击目标，SDK 完成当前画面的定位和执行。</strong></p>
+<p align="center"><a href="README-preview.html">中文</a> · <a href="README-preview.en.html">English</a></p><p>Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测试平台和脚本提供可独立调用的手机点击能力。<strong>调用方给出点击目标，SDK 完成当前画面的定位和执行。</strong></p>
 <p>它承接从“知道要操作什么”到“实际点到设备上”的这一段。你可以继续使用自己的任务规划、缓存和业务判断，不需要引入完整 AI Phone 框架。</p>
-<table>
-<thead>
-<tr>
-<th align="center">本地处理</th>
-<th align="center">平台接入</th>
-<th align="center">执行方式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><strong>15–50ms</strong> 候选处理、画框与编码¹</td>
-<td align="center"><strong>Android / iOS / HarmonyOS</strong></td>
-<td align="center"><strong><code>click()</code> / <code>run()</code></strong></td>
-</tr>
-<tr>
-<td align="center">设备通道与模型请求分别计时</td>
-<td align="center">真机与虚拟机</td>
-<td align="center">单步调用或按标点、换行连续执行</td>
-</tr>
-</tbody></table>
-<p>¹ 前期安卓实验记录，完整口径见<a href="#%E6%80%A7%E8%83%BD%E4%B8%8E%E8%AE%A1%E6%97%B6">性能与计时</a>。</p>
-<h2 id="性能与计时">性能与计时</h2>
-<p><strong>毫秒级本地处理</strong>描述候选生成、画框与编码等组件处理阶段。每步完整耗时还包含设备采集、模型请求、点击，以及该步后续衔接。性能记录按这些阶段分别列出，避免用模型耗时代替整体耗时。</p>
-<table>
-<thead>
-<tr>
-<th>已有实验数据</th>
-<th>测量范围</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>15–50ms</strong></td>
-<td>本地候选处理、画框与编码</td>
-</tr>
-<tr>
-<td><strong>620ms</strong> 中位</td>
-<td>安卓非模型整轮</td>
-</tr>
-<tr>
-<td><strong>493–729ms</strong></td>
-<td>同一安卓导航样本9轮非模型耗时范围</td>
-</tr>
-</tbody></table>
-<p>上述数据来自前期常驻 UiAutomator2 实验，不含模型请求、初始化与步骤衔接。<a href="docs/%E6%BC%94%E7%A4%BA%E8%80%97%E6%97%B6%E6%98%8E%E7%BB%86.md">查看完整分段记录</a>：尺寸、取树、截图、候选处理、模型往返、点击、其他开销、衔接与整体步骤。</p>
-<p><img src="docs/media/modules/timing.png" alt="毫秒级通道处理与分段计时"></p>
-<table>
-<thead>
-<tr>
-<th>平台</th>
-<th align="right">额外采样间隔</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Android</td>
-<td align="right">100ms</td>
-</tr>
-<tr>
-<td>iOS</td>
-<td align="right">200ms</td>
-</tr>
-<tr>
-<td>HarmonyOS</td>
-<td align="right">0ms</td>
-</tr>
-</tbody></table>
-<p>截图本身仍有耗时。对比预算耗尽时按 V3 返回最后一帧继续；参数和执行流程保持已调版本。</p>
-<h2 id="演示界面">演示界面</h2>
-<p><img src="docs/media/site-demo.png" alt="Jev Phone Demo：手机镜像、执行日志与模型编号图"></p>
-<p align="center">Demo 直接调用同一 SDK：左侧查看手机，中间查看执行过程，右侧查看模型实际接收的编号图。</p><h2 id="工作原理">工作原理</h2>
-<p>手机的系统树能描述区域位置，但节点文字未必表达图标的含义；截图能展示外观，还需要把识别结果绑定到可执行位置。Jev Phone 把两者结合：<strong>用树确定候选区域，用画面理解目标，让模型选择区域编号，再由驱动执行点击。</strong></p>
-<p><img src="docs/media/modules/grounding.png" alt="系统区域与画面语义共同绑定点击目标"></p>
-<p>候选来自当前帧，模型返回编号、<code>NOT_FOUND</code> 或 <code>UNCERTAIN</code>。SDK 将有效编号映射到区域中心；定位或点击失败时，停止后续步骤并保留已完成结果。</p>
-<p><img src="docs/media/modules/core.png" alt="视觉目标定位与设备动作绑定">
-<img src="docs/media/modules/flow.png" alt="区域标注与有限动作空间">
-<img src="docs/media/modules/responsibility.png" alt="调用方与组件的职责边界"></p>
-<h2 id="三端视觉定位">三端视觉定位</h2>
-<p>三端共用定位流程，平台适配分别处理层级、截图、坐标单位与驱动。下面直接展示官网原始卡片，并提供完整编号图。</p>
-<table>
-<thead>
-<tr>
-<th>Android · 真机／虚拟机</th>
-<th>iOS · 真机／虚拟机</th>
-<th>HarmonyOS · 真机／虚拟机</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>UiAutomator2</td>
-<td>WDA / XCTest</td>
-<td>UITest / hmdriver2</td>
-</tr>
-<tr>
-<td>原生截图、取树与点击</td>
-<td>按需截图、pixel/point 映射</td>
-<td>原生截图、层级与直接点击回执</td>
-</tr>
-</tbody></table>
-<p><img src="docs/media/modules/android.png" alt="Android官网卡片">
-<a href="docs/media/android-grounding.png">查看Android完整编号图</a></p>
-<p><img src="docs/media/modules/ios.png" alt="iOS官网卡片">
-<a href="docs/media/ios-grounding.png">查看iOS完整编号图</a></p>
-<p><img src="docs/media/modules/harmony.png" alt="HarmonyOS官网卡片">
-<a href="docs/media/harmony-grounding.png">查看HarmonyOS完整编号图</a></p>
-<p>原图分别来自安卓真机、iOS虚拟机、鸿蒙虚拟机实验；各平台标题标明当前支持的设备范围。<a href="docs/%E9%AA%8C%E8%AF%81%E6%A6%82%E8%A7%88.md">验证概览</a></p>
-<h2 id="快速接入">快速接入</h2>
-<p>Python 3.10+。准备已连接的设备与对应模型 Key，然后从仓库安装：</p>
+<!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. --><p><a href="docs/media/demo-views-hd.png"><img src="docs/media/demo-views-hd.png" alt="两张完整Demo首页组合图"></a></p>
+<p><a href="docs/media/website-guide.zh.png"><img src="docs/media/website-guide.zh.png" alt="官网完整技术与接入说明"></a></p>
+<h2>接入代码</h2>
+<p>Python 3.10+。从仓库安装：</p>
 <pre><code class="language-sh">git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
 python3 -m venv .venv
@@ -121,44 +21,7 @@ with AndroidClicker(
     provider=&quot;openrouter&quot;,
 ) as phone:
     report = phone.run(&quot;打开默认难度设置；选择中等难度；保存修改&quot;)
-    # 单步：phone.click(&quot;打开默认难度设置&quot;)
     print(report[&quot;results&quot;])
 </code></pre>
-<p>每个步骤只描述一个点击目标。<code>run()</code> 按中英文逗号、分号、句号、问号、感叹号及换行拆分，最多20步；每次模型请求只包含当前步骤。</p>
-<table>
-<thead>
-<tr>
-<th>平台</th>
-<th>安装</th>
-<th>设备连接</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Android</td>
-<td><code>pip install -e &#39;.[android]&#39;</code></td>
-<td><code>AndroidClicker(serial=..., api_key=...)</code></td>
-</tr>
-<tr>
-<td>iOS</td>
-<td><code>pip install -e .</code></td>
-<td><code>IOSClicker(wda_url=..., api_key=...)</code></td>
-</tr>
-<tr>
-<td>HarmonyOS</td>
-<td><code>pip install -e &#39;.[harmony]&#39;</code></td>
-<td><code>HarmonyClicker(serial=..., api_key=...)</code></td>
-</tr>
-</tbody></table>
-<p>支持 OpenRouter 多模态 Decisions 和 OpenAI 官方 Decisions；官方通道使用 <code>provider=&quot;openai&quot;</code> 及对应 Key。当前从源码或 wheel 安装，尚未发布到 PyPI。</p>
-<p><a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">完整接入指南</a> · <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">设备准备</a> · <a href="examples/click.py">单设备示例</a> · <a href="examples/parallel.py">多设备并行</a></p>
-<h2 id="demo-与能力范围">Demo 与能力范围</h2>
-<pre><code class="language-sh">.venv/bin/pip install -e &#39;.[demo]&#39;
-.venv/bin/jev-phone-demo
-</code></pre>
-<p>准备 <code>adb</code>、<code>scrcpy</code>、<code>ffmpeg</code>，打开 <code>http://127.0.0.1:8765/</code>。网页提供安卓只读镜像、执行日志和编号图；三端 SDK 接入不依赖网页。页面刷新清除连接与 Key。</p>
-<p>当前交付 <strong>单步与多步点击</strong>。任务规划、业务断言、输入、滚动、长按、应用启动与设备调度由外部系统承接。使用者准备设备授权、WDA签名与虚拟机；截图和执行记录作为本地产物保存。</p>
-<p><img src="docs/media/modules/integration.png" alt="独立组件接入">
-<img src="docs/media/modules/practice.png" alt="当前能力与实践说明"></p>
-<hr>
-<p><a href="README-preview.html">中文</a> · <a href="README-preview.en.html">English</a> · <a href="docs/media/site-guide.png">完整官网技术原图</a> · <a href="LICENSE">MIT</a> · <a href="NOTICE.md">来源说明</a></p>
+<p><a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">SDK接入指南</a> · <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">三端设备准备</a> · <a href="docs/%E9%AA%8C%E8%AF%81%E6%A6%82%E8%A7%88.md">验证概览</a> · <a href="docs/%E6%BC%94%E7%A4%BA%E8%80%97%E6%97%B6%E6%98%8E%E7%BB%86.md">完整计时记录</a> · <a href="docs/readme-site/manual.zh.html">页面源码</a> · <a href="LICENSE">MIT</a></p>
 </body></html>
