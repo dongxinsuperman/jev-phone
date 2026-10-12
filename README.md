@@ -9,9 +9,15 @@ Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测�
 
 <!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. -->
 
-[![两张完整Demo首页组合图](docs/media/demo-views-hd.png)](docs/media/demo-views-hd.png)
+[![Demo首页完整高清图](docs/media/demo-home-hd.jpg)](docs/media/demo-home-hd.jpg)
 
 [![官网完整技术与接入说明](docs/media/website-guide.zh.png)](docs/media/website-guide.zh.png)
+
+## 当前能力与后续承接
+
+当前支持 Android、iOS、HarmonyOS 真机与虚拟机上的单步和连续点击，完成画面采集、候选生成、模型选择、点击执行，并返回结果与计时。
+
+后续可扩展输入、滚动、长按等动作。任务规划、业务断言、应用启动和设备调度由现有系统承接，可以围绕点击组件继续集成。
 
 ## 接入代码
 

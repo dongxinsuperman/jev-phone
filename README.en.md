@@ -9,9 +9,15 @@ It handles the gap between knowing what to operate and acting on the device. Kee
 
 <!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. -->
 
-[![Two complete Demo views](docs/media/demo-views-hd.png)](docs/media/demo-views-hd.png)
+[![Complete Demo homepage](docs/media/demo-home-hd.jpg)](docs/media/demo-home-hd.jpg)
 
 [![Complete website technology and integration guide](docs/media/website-guide.en.png)](docs/media/website-guide.en.png)
+
+## Current scope and next integrations
+
+The SDK currently supports single and sequential taps on Android, iOS, and HarmonyOS physical devices and emulators. It captures the screen, generates candidates, obtains a model choice, executes the tap, and returns results and timing.
+
+Text input, scrolling, long press, and more gestures remain future extensions. Existing systems continue to provide task planning, business assertions, app launch, and device scheduling; these capabilities can be integrated around the tap SDK.
 
 ## Integration code
 
