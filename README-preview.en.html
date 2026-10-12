@@ -4,10 +4,23 @@
 <p align="center"><a href="README-preview.en.html">English</a> · <a href="README-preview.html">中文</a></p><p>Jev Phone connects Jev multimodal decisions to mobile devices, providing an independent tap component for existing agents, testing platforms, and scripts. <strong>Your system supplies a target; the SDK locates it in the current screen and executes the tap.</strong></p>
 <p>It handles the gap between knowing what to operate and acting on the device. Keep your own planner, cache, and business logic without importing the complete AI Phone framework.</p>
 <!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. --><p><a href="docs/media/demo-home-hd.jpg"><img src="docs/media/demo-home-hd.jpg" alt="Complete Demo homepage"></a></p>
-<p><a href="docs/media/website-guide.en.png"><img src="docs/media/website-guide.en.png" alt="Complete website technology and integration guide"></a></p>
+<p><img src="docs/media/readme/overview.en.png" alt="Three-platform multimodal visual interaction"></p>
+<h2>Performance</h2>
+<p>Local candidate processing, annotation, and encoding took <strong>15–50ms</strong> in the existing Android experiment. The non-model round had a <strong>620ms</strong> median and a <strong>493–729ms</strong> range across nine runs of one navigation sample. These measurements exclude model requests, initialization, and screen settling.</p>
+<p>Complete step time includes capture, candidate processing, the model round trip, the tap, and the transition following that step. <a href="docs/%E6%BC%94%E7%A4%BA%E8%80%97%E6%97%B6%E6%98%8E%E7%BB%86.md">Full stage-by-stage records, Chinese</a>.</p>
+<p><img src="docs/media/readme/timing.en.png" alt="Channel processing and timing"></p>
+<p><img src="docs/media/readme/binding.en.png" alt="Visual grounding and action binding"></p>
+<h2>Why combine the UI tree and screenshot?</h2>
+<p>UI trees describe bounds and attributes, but an icon may have no useful label, and internal names may differ from visible content. A screenshot reveals appearance, but recognition still needs an executable location. Combining them lets the model interpret the visible target while the SDK binds its choice to a known region.</p>
+<p><img src="docs/media/readme/geometry.en.png" alt="Geometry and visual semantics"></p>
+<p><img src="docs/media/readme/platforms.en.png" alt="Three-platform visual grounding and execution evidence"></p>
+<h2>Independent SDK integration</h2>
+<p>Add phone taps to your existing program: prepare the device service and model credentials, create a Clicker for the target platform, then call <code>click(target)</code> for one tap or <code>run(text)</code> for a sequence. The SDK returns selected regions, coordinates, driver status, and stage timing so your system can continue its workflow.</p>
+<p>No Demo webpage or database is required. Use <code>AndroidClicker</code>, <code>IOSClicker</code>, or <code>HarmonyClicker</code>; the detailed integration guide covers provider configuration and error handling.</p>
+<p><a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">SDK guide, Chinese</a> · <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">Device setup, Chinese</a> · <a href="examples/click.py">Example</a> · <a href="examples/parallel.py">Parallel devices</a></p>
 <h2>Current scope and next integrations</h2>
-<p>The SDK currently supports single and sequential taps on Android, iOS, and HarmonyOS physical devices and emulators. It captures the screen, generates candidates, obtains a model choice, executes the tap, and returns results and timing.</p>
-<p>Text input, scrolling, long press, and more gestures remain future extensions. Existing systems continue to provide task planning, business assertions, app launch, and device scheduling; these capabilities can be integrated around the tap SDK.</p>
+<p>The SDK currently supports single and sequential taps on Android, iOS, and HarmonyOS physical devices and emulators. It captures the screen, builds candidates, obtains a model choice, executes the tap, and returns results and timing.</p>
+<p>Text input, scrolling, long press, and more gestures remain future extensions. Existing systems continue to provide planning, business assertions, app launch, and device scheduling, integrating them around the tap component.</p>
 <h2>Integration code</h2>
 <p>Python 3.10+. Install from the repository:</p>
 <pre><code class="language-sh">git clone https://github.com/dongxinsuperman/jev-phone.git

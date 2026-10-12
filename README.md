@@ -11,7 +11,33 @@ Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测�
 
 [![Demo首页完整高清图](docs/media/demo-home-hd.jpg)](docs/media/demo-home-hd.jpg)
 
-[![官网完整技术与接入说明](docs/media/website-guide.zh.png)](docs/media/website-guide.zh.png)
+![多模态决策驱动的三端视觉交互通道](docs/media/readme/overview.zh.png)
+
+## 性能
+
+已有安卓实验中，本地候选处理、画框与编码耗时 **15–50ms**；非模型整轮中位为 **620ms**，同一导航样本9轮范围为 **493–729ms**。这些数据不包含模型请求、初始化与页面稳定。
+
+每一步整体耗时还包括设备采集、候选处理、模型往返、点击和该步后续衔接。[完整分段记录](docs/演示耗时明细.md)分别列出这些时间。
+
+![毫秒级通道处理与分段计时](docs/media/readme/timing.zh.png)
+
+![视觉目标定位与设备动作绑定](docs/media/readme/binding.zh.png)
+
+## 为什么结合系统树与截图
+
+系统树能提供控件边界和属性，但图标可能没有文字，节点名称也可能与画面不一致；截图能呈现图标和文字，却还需要确定可执行的位置。把两者结合后，模型依据画面理解目标，组件依据区域边界完成点击绑定。
+
+![几何约束与视觉语义融合](docs/media/readme/geometry.zh.png)
+
+![三端视觉定位与执行验证](docs/media/readme/platforms.zh.png)
+
+## 独立组件接入
+
+把手机点击能力接到你已有的程序中：准备好设备服务和模型 Key，创建目标平台的 Clicker。单个点击目标调用 `click(target)`，一组有序目标调用 `run(text)`；组件返回选中区域、坐标、驱动状态和分段耗时，让你的程序继续处理后续流程。
+
+接入不需要运行 Demo 网页或数据库。安卓、iOS、鸿蒙分别使用 `AndroidClicker`、`IOSClicker`、`HarmonyClicker`，模型通道配置和异常处理见接入指南。
+
+[SDK接入指南](docs/接入指南.md) · [三端设备准备](docs/三端设备准备.md) · [调用示例](examples/click.py) · [多设备并行](examples/parallel.py)
 
 ## 当前能力与后续承接
 

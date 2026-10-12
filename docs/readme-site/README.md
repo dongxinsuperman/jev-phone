@@ -5,3 +5,5 @@
 导出方式：浏览器将完整页面按 1000 CSS px 宽、2倍像素密度整页渲染为 `website-guide.zh.png` 和 `website-guide.en.png`，从源码整页导出，不裁切模块。README保留第二张完整1920px宽Demo实录画面为 `demo-home-hd.jpg`；第一张不再展示。
 
 两段动画的采用条件独立保留：每一步完整耗时不超过1700ms。当前未达标动画不嵌入README。
+
+当前展示把补充说明保留为README正文。`exports/` 为独立图解的完整源页面，以原样式整页导出到 `docs/media/readme/`；不把新增说明渲染到图片里。独立组件接入使用文字表达，实际代码置于README末尾。

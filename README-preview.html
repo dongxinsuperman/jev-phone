@@ -4,7 +4,20 @@
 <p align="center"><a href="README-preview.html">中文</a> · <a href="README-preview.en.html">English</a></p><p>Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测试平台和脚本提供可独立调用的手机点击能力。<strong>调用方给出点击目标，SDK 完成当前画面的定位和执行。</strong></p>
 <p>它承接从“知道要操作什么”到“实际点到设备上”的这一段。你可以继续使用自己的任务规划、缓存和业务判断，不需要引入完整 AI Phone 框架。</p>
 <!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. --><p><a href="docs/media/demo-home-hd.jpg"><img src="docs/media/demo-home-hd.jpg" alt="Demo首页完整高清图"></a></p>
-<p><a href="docs/media/website-guide.zh.png"><img src="docs/media/website-guide.zh.png" alt="官网完整技术与接入说明"></a></p>
+<p><img src="docs/media/readme/overview.zh.png" alt="多模态决策驱动的三端视觉交互通道"></p>
+<h2>性能</h2>
+<p>已有安卓实验中，本地候选处理、画框与编码耗时 <strong>15–50ms</strong>；非模型整轮中位为 <strong>620ms</strong>，同一导航样本9轮范围为 <strong>493–729ms</strong>。这些数据不包含模型请求、初始化与页面稳定。</p>
+<p>每一步整体耗时还包括设备采集、候选处理、模型往返、点击和该步后续衔接。<a href="docs/%E6%BC%94%E7%A4%BA%E8%80%97%E6%97%B6%E6%98%8E%E7%BB%86.md">完整分段记录</a>分别列出这些时间。</p>
+<p><img src="docs/media/readme/timing.zh.png" alt="毫秒级通道处理与分段计时"></p>
+<p><img src="docs/media/readme/binding.zh.png" alt="视觉目标定位与设备动作绑定"></p>
+<h2>为什么结合系统树与截图</h2>
+<p>系统树能提供控件边界和属性，但图标可能没有文字，节点名称也可能与画面不一致；截图能呈现图标和文字，却还需要确定可执行的位置。把两者结合后，模型依据画面理解目标，组件依据区域边界完成点击绑定。</p>
+<p><img src="docs/media/readme/geometry.zh.png" alt="几何约束与视觉语义融合"></p>
+<p><img src="docs/media/readme/platforms.zh.png" alt="三端视觉定位与执行验证"></p>
+<h2>独立组件接入</h2>
+<p>把手机点击能力接到你已有的程序中：准备好设备服务和模型 Key，创建目标平台的 Clicker。单个点击目标调用 <code>click(target)</code>，一组有序目标调用 <code>run(text)</code>；组件返回选中区域、坐标、驱动状态和分段耗时，让你的程序继续处理后续流程。</p>
+<p>接入不需要运行 Demo 网页或数据库。安卓、iOS、鸿蒙分别使用 <code>AndroidClicker</code>、<code>IOSClicker</code>、<code>HarmonyClicker</code>，模型通道配置和异常处理见接入指南。</p>
+<p><a href="docs/%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97.md">SDK接入指南</a> · <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">三端设备准备</a> · <a href="examples/click.py">调用示例</a> · <a href="examples/parallel.py">多设备并行</a></p>
 <h2>当前能力与后续承接</h2>
 <p>当前支持 Android、iOS、HarmonyOS 真机与虚拟机上的单步和连续点击，完成画面采集、候选生成、模型选择、点击执行，并返回结果与计时。</p>
 <p>后续可扩展输入、滚动、长按等动作。任务规划、业务断言、应用启动和设备调度由现有系统承接，可以围绕点击组件继续集成。</p>
