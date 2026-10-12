@@ -17,3 +17,7 @@ build/
 dist/
 docs/验证报告.md
 docs/步骤衔接对照测试.md
+
+# Local handoff and driver probe
+/讨论上下文.md
+/examples/verify_driver.py
