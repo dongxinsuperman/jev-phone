@@ -6,7 +6,7 @@
 - Reuse settled Android frames and their dimensions without another screenshot or device-size query.
 - Retain the approved 180-second model connection keepalive and require Pillow 10.1+ for the existing renderer.
 - Add the qualified four-step Demo recording, bilingual timing breakdown, upgrade and maintenance instructions.
-- Preserve current execution flow, V3 stability parameters and public call signatures. Private GitHub delivery only; no PyPI publication.
+- Maintain compatibility with existing public call signatures.
 
 ## 0.1.0 — 2026-10-12
 

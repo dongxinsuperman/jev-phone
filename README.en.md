@@ -86,7 +86,7 @@ Text input, scrolling, long press, and more gestures remain future extensions. E
 
 ## Integration code
 
-Use **Python 3.10+** (for example, `python3.11`). The commands below target macOS / Linux. This repository is private: access permission and GitHub Git authentication are required. Without repository access, use the supplied source archive or wheel; see [installation and upgrades](docs/升级与维护.en.md). Install a pinned version from the repository:
+Use **Python 3.10+** (for example, `python3.11`). The commands below target macOS / Linux. Cloning requires repository access and GitHub Git authentication. Alternatively, use a source archive or wheel; see [installation and upgrades](docs/升级与维护.en.md). Install a pinned version from the repository:
 
 ```sh
 git clone https://github.com/dongxinsuperman/jev-phone.git

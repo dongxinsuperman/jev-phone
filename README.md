@@ -86,7 +86,7 @@ Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测�
 
 ## 接入代码
 
-需要 **Python 3.10+**（例如 `python3.11`）；下面命令适用于 macOS / Linux。仓库目前为私有，先获得仓库访问权限并完成 GitHub Git 认证；没有仓库权限时使用提供的源码交付包或 wheel，安装方法见[升级与维护](docs/升级与维护.md)。从仓库安装固定版本：
+需要 **Python 3.10+**（例如 `python3.11`）；下面命令适用于 macOS / Linux。克隆前需具备仓库访问权限并完成 GitHub Git 认证；也可使用源码包或 wheel，安装方法见[升级与维护](docs/升级与维护.md)。从仓库安装固定版本：
 
 ```sh
 git clone https://github.com/dongxinsuperman/jev-phone.git
