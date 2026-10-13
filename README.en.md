@@ -15,14 +15,14 @@ Four consecutive taps on a real Android device: Basic → Medium → Hard → Sa
 
 ![Real-device demo: preview and save difficulty](docs/media/demo-default-difficulty-fast.gif)
 
-| Step | Model round trip | SDK local processing | Inter-step comparison | Complete step |
+| Step | Model round trip | SDK local processing | Page stability wait | Complete step |
 |---|---:|---:|---:|---:|
 | Basic | 763.28 ms | 490.99 ms | 658.00 ms | 1,912.27 ms |
 | Medium | 646.39 ms | 289.80 ms | 665.00 ms | 1,601.19 ms |
 | Hard | 647.78 ms | 296.26 ms | 702.00 ms | 1,646.04 ms |
 | Save | 706.62 ms | 301.97 ms | 0.00 ms | 1,008.59 ms |
 
-Complete-step time includes the following frame comparison. The final step has no following step and adds no comparison. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: **6,170.82ms**.
+Complete-step time includes waiting for the page to stabilize after the tap, using consecutive screenshots to detect stability. The final step has no following step and adds no stability wait. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: **6,170.82ms**.
 
 [MP4](docs/media/demo-default-difficulty-fast.mp4) · [JSON](docs/media/demo-default-difficulty-fast.json)
 

@@ -15,7 +15,7 @@
   <th>步骤</th>
   <th style="text-align:right">模型往返</th>
   <th style="text-align:right">SDK本地处理</th>
-  <th style="text-align:right">步间图片对比</th>
+  <th style="text-align:right">页面稳定等待</th>
   <th style="text-align:right">整步合计</th>
 </tr>
 </thead>
@@ -50,7 +50,7 @@
 </tr>
 </tbody>
 </table>
-<p>整步合计包含该步之后的图片对比；末步没有后续步骤，因此不追加对比。第一步低于2秒，其余三步均低于1.7秒；整轮实际耗时 <strong>6,170.82ms</strong>。</p>
+<p>整步合计包含点击后的页面稳定等待，通过连续截图对比判断画面是否稳定；末步没有后续步骤，因此不追加等待。第一步低于2秒，其余三步均低于1.7秒；整轮实际耗时 <strong>6,170.82ms</strong>。</p>
 <p><a href="docs/media/demo-default-difficulty-fast.mp4">MP4</a> · <a href="docs/media/demo-default-difficulty-fast.json">JSON</a></p>
 <h2>性能</h2>
 <p>已有安卓实验中，本地候选处理、画框与编码耗时 <strong>15–50ms</strong>；非模型整轮中位为 <strong>620ms</strong>，同一导航样本9轮范围为 <strong>493–729ms</strong>。这些数据不包含模型请求、初始化与页面稳定。</p>

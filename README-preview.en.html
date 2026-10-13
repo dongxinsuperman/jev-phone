@@ -15,7 +15,7 @@
   <th>Step</th>
   <th style="text-align:right">Model round trip</th>
   <th style="text-align:right">SDK local processing</th>
-  <th style="text-align:right">Inter-step comparison</th>
+  <th style="text-align:right">Page stability wait</th>
   <th style="text-align:right">Complete step</th>
 </tr>
 </thead>
@@ -50,7 +50,7 @@
 </tr>
 </tbody>
 </table>
-<p>Complete-step time includes the following frame comparison. The final step has no following step and adds no comparison. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: <strong>6,170.82ms</strong>.</p>
+<p>Complete-step time includes waiting for the page to stabilize after the tap, using consecutive screenshots to detect stability. The final step has no following step and adds no stability wait. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: <strong>6,170.82ms</strong>.</p>
 <p><a href="docs/media/demo-default-difficulty-fast.mp4">MP4</a> · <a href="docs/media/demo-default-difficulty-fast.json">JSON</a></p>
 <h2>Performance</h2>
 <p>Local candidate processing, annotation, and encoding took <strong>15–50ms</strong> in the existing Android experiment. The non-model round had a <strong>620ms</strong> median and a <strong>493–729ms</strong> range across nine runs of one navigation sample. These measurements exclude model requests, initialization, and screen settling.</p>
