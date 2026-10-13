@@ -1,46 +1,95 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Jev Phone · en</title><style>body{max-width:900px;margin:48px auto;padding:0 32px 64px;font:16px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;color:#1f2328;background:white}img{max-width:100%;height:auto}h1{font-size:36px}h2{font-size:25px;border-bottom:1px solid #d1d9e0;padding-bottom:9px;margin-top:40px}h3{margin-top:28px}a{color:#0969da;text-decoration:none}a:hover{text-decoration:underline}table{border-collapse:collapse;width:100%;margin:20px 0;font-size:14px}td,th{border:1px solid #d1d9e0;padding:12px 14px}tr:nth-child(2n){background:#f6f8fa}pre{background:#f6f8fa;padding:20px;overflow:auto;border-radius:8px;font-size:14px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,monospace}details{border:1px solid #d1d9e0;border-radius:8px;padding:14px 18px;margin:22px 0}summary{cursor:pointer;color:#185f47}details img{display:block;margin:18px auto}hr{border:0;border-top:1px solid #d1d9e0;margin:36px 0}@media(max-width:600px){body{padding:0 18px}table{font-size:12px}td,th{padding:8px}}</style><body><h1 align="center">Jev Phone</h1>
 <p align="center"><strong>A multimodal tap SDK for three mobile platforms, with millisecond-level local processing</strong></p>
-<p align="center">Android · iOS · HarmonyOS<br>Physical devices and emulators · Single and sequential taps · Python · MIT</p>
-<p align="center"><a href="README-preview.en.html">English</a> · <a href="README-preview.html">中文</a></p><p>Jev Phone connects Jev multimodal decisions to mobile devices, providing an independent tap component for existing agents, testing platforms, and scripts. <strong>Your system supplies a target; the SDK locates it in the current screen and executes the tap.</strong></p>
+<p align="center">Android · iOS · HarmonyOS</p>
+<p align="center"><a href="README-preview.en.html">English</a> · <a href="README-preview.html">中文</a></p>
+
+<p>Jev Phone connects Jev multimodal decisions to mobile devices, providing an independent tap component for existing agents, testing platforms, and scripts. <strong>Your system supplies a target; the SDK locates it in the current screen and executes the tap.</strong></p>
 <p>It handles the gap between knowing what to operate and acting on the device. Keep your own planner, cache, and business logic without importing the complete AI Phone framework.</p>
-<!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. --><p><a href="docs/media/demo-home-hd.jpg"><img src="docs/media/demo-home-hd.jpg" alt="Complete Demo homepage"></a></p>
-<p><img src="docs/media/readme/overview.en.png" alt="Three-platform multimodal visual interaction"></p>
+<p><img src="docs/media/readme/overview.en.png" alt="Three-platform multimodal visual interaction" /></p>
+<h2>Real-device demo: preview and save difficulty</h2>
+<p>Four consecutive taps on a real Android device: Basic → Medium → Hard → Save. The difficulty dialog is already open at the start; Hard is saved at the end. The stopwatch follows real elapsed time; playback is not accelerated.</p>
+<p><img src="docs/media/demo-default-difficulty-fast.gif" alt="Real-device demo: preview and save difficulty" /></p>
+<table>
+<thead>
+<tr>
+  <th>Step</th>
+  <th style="text-align:right">Model round trip</th>
+  <th style="text-align:right">SDK local processing</th>
+  <th style="text-align:right">Inter-step comparison</th>
+  <th style="text-align:right">Complete step</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>Basic</td>
+  <td style="text-align:right">763.28 ms</td>
+  <td style="text-align:right">490.99 ms</td>
+  <td style="text-align:right">658.00 ms</td>
+  <td style="text-align:right">1,912.27 ms</td>
+</tr>
+<tr>
+  <td>Medium</td>
+  <td style="text-align:right">646.39 ms</td>
+  <td style="text-align:right">289.80 ms</td>
+  <td style="text-align:right">665.00 ms</td>
+  <td style="text-align:right">1,601.19 ms</td>
+</tr>
+<tr>
+  <td>Hard</td>
+  <td style="text-align:right">647.78 ms</td>
+  <td style="text-align:right">296.26 ms</td>
+  <td style="text-align:right">702.00 ms</td>
+  <td style="text-align:right">1,646.04 ms</td>
+</tr>
+<tr>
+  <td>Save</td>
+  <td style="text-align:right">706.62 ms</td>
+  <td style="text-align:right">301.97 ms</td>
+  <td style="text-align:right">0.00 ms</td>
+  <td style="text-align:right">1,008.59 ms</td>
+</tr>
+</tbody>
+</table>
+<p>Complete-step time includes the following frame comparison. The final step has no following step and adds no comparison. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: <strong>6,170.82ms</strong>.</p>
+<p><a href="docs/media/demo-default-difficulty-fast.mp4">MP4</a> · <a href="docs/media/demo-default-difficulty-fast.json">JSON</a></p>
 <h2>Performance</h2>
 <p>Local candidate processing, annotation, and encoding took <strong>15–50ms</strong> in the existing Android experiment. The non-model round had a <strong>620ms</strong> median and a <strong>493–729ms</strong> range across nine runs of one navigation sample. These measurements exclude model requests, initialization, and screen settling.</p>
 <p>Complete step time includes capture, candidate processing, the model round trip, the tap, and the transition following that step. <a href="docs/%E6%BC%94%E7%A4%BA%E8%80%97%E6%97%B6%E6%98%8E%E7%BB%86.md">Full stage-by-stage records, Chinese</a>.</p>
-<p><img src="docs/media/readme/timing.en.png" alt="Channel processing and timing"></p>
+<p><img src="docs/media/readme/timing.en.png" alt="Channel processing and timing" /></p>
 <h2>How it works: Jev chooses, the SDK executes</h2>
-<p>The current multimodal Jev integration uses a <strong>finite-choice decision interface</strong>. It interprets the image and selects a supplied candidate; it does not directly return a device action or executable tap coordinates through this integration. The SDK therefore bridges the model&#39;s choice to an actual device operation.</p>
+<p>The current multimodal Jev integration uses a <strong>finite-choice decision interface</strong>. It interprets the image and selects a supplied candidate; it does not directly return a device action or executable tap coordinates through this integration. The SDK therefore bridges the model's choice to an actual device operation.</p>
 <p>The component obtains actionable element bounds from the UI tree, uses their four corners to draw rectangles on the screenshot, and assigns IDs. Jev receives the current target and annotated image and returns an ID. The SDK looks up that element, computes its center, and asks the platform driver to tap it. Bounds are stored as the upper-left and lower-right coordinates, which determine all four corners.</p>
-<p><img src="docs/media/readme/target-to-tap.en.svg" alt="From a semantic target to a numbered choice and a device tap"></p>
+<p><img src="docs/media/readme/target-to-tap.en.svg" alt="From a semantic target to a numbered choice and a device tap" /></p>
 <h2>Why combine the UI tree and screenshot?</h2>
 <p>The rectangle gets its geometry from the UI tree, while the screenshot supplies visible text, icons, and appearance. A node can have an empty label yet display an avatar. In that case, Jev identifies the avatar in the image and chooses its ID; the SDK uses the same ID to recover the known bounds. This binds a multimodal choice to an executable element.</p>
-<p><img src="docs/media/readme/geometry.en.png" alt="Geometry and visual semantics"></p>
+<p><img src="docs/media/readme/geometry.en.png" alt="Geometry and visual semantics" /></p>
 <h2>Platform support and device preparation</h2>
 <p>Three adapters are implemented: Android uses UiAutomator2, iOS uses WDA / XCTest, and HarmonyOS uses UITest / hmdriver2. They normalize hierarchies, screenshots, display dimensions, and taps into the same candidate-selection flow. iOS also maps screenshot pixels to WDA points. The SDK supports physical devices and emulators, with single and sequential taps through the same interface.</p>
 <p>Before use, prepare an authorized, unlocked device and its platform service, along with the appropriate model credentials:</p>
 <table>
 <thead>
 <tr>
-<th>Platform</th>
-<th>Preparation</th>
+  <th>Platform</th>
+  <th>Preparation</th>
 </tr>
 </thead>
-<tbody><tr>
-<td>Android</td>
-<td>ADB recognizes the device; USB debugging is authorized and UiAutomator2 can run.</td>
+<tbody>
+<tr>
+  <td>Android</td>
+  <td>ADB recognizes the device; USB debugging is authorized and UiAutomator2 can run.</td>
 </tr>
 <tr>
-<td>iOS</td>
-<td>Developer Mode and trust are configured on the physical device; a signed, running WDA service is reachable.</td>
+  <td>iOS</td>
+  <td>Developer Mode and trust are configured on the physical device; a signed, running WDA service is reachable.</td>
 </tr>
 <tr>
-<td>HarmonyOS</td>
-<td>HDC recognizes the authorized device and UITest / hmdriver2 can access it.</td>
+  <td>HarmonyOS</td>
+  <td>HDC recognizes the authorized device and UITest / hmdriver2 can access it.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p><a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">Device preparation guide, Chinese</a>. The original three-platform figures below show numbered regions and their execution binding.</p>
-<p><img src="docs/media/readme/platforms.en.png" alt="Three-platform visual grounding and execution evidence"></p>
+<p><img src="docs/media/readme/platforms.en.png" alt="Three-platform visual grounding and execution evidence" /></p>
 <h2>Independent SDK integration</h2>
 <p>Add phone taps to your existing program: prepare the device service and model credentials, create a Clicker for the target platform, then call <code>click(target)</code> for one tap or <code>run(text)</code> for a sequence. The SDK returns selected regions, coordinates, driver status, and stage timing so your system can continue its workflow.</p>
 <p>No Demo webpage or database is required. Use <code>AndroidClicker</code>, <code>IOSClicker</code>, or <code>HarmonyClicker</code>; the detailed integration guide covers provider configuration and error handling.</p>
@@ -53,7 +102,7 @@
 <pre><code class="language-sh">git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
 python3 -m venv .venv
-.venv/bin/pip install -e &#39;.[android]&#39;
+.venv/bin/pip install -e '.[android]'
 </code></pre>
 <pre><code class="language-python">from getpass import getpass
 from jev_phone import AndroidClicker

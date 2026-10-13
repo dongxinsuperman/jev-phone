@@ -1,17 +1,33 @@
 <h1 align="center">Jev Phone</h1>
 <p align="center"><strong>A multimodal tap SDK for three mobile platforms, with millisecond-level local processing</strong></p>
-<p align="center">Android · iOS · HarmonyOS<br>Physical devices and emulators · Single and sequential taps · Python · MIT</p>
+<p align="center">Android · iOS · HarmonyOS</p>
 <p align="center"><a href="README.en.md">English</a> · <a href="README.md">中文</a></p>
 
 Jev Phone connects Jev multimodal decisions to mobile devices, providing an independent tap component for existing agents, testing platforms, and scripts. **Your system supplies a target; the SDK locates it in the current screen and executes the tap.**
 
 It handles the gap between knowing what to operate and acting on the device. Keep your own planner, cache, and business logic without importing the complete AI Phone framework.
 
-<!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. -->
-
-[![Complete Demo homepage](docs/media/demo-home-hd.jpg)](docs/media/demo-home-hd.jpg)
-
 ![Three-platform multimodal visual interaction](docs/media/readme/overview.en.png)
+
+## Real-device demo: preview and save difficulty
+
+Four consecutive taps on a real Android device: Basic → Medium → Hard → Save. The difficulty dialog is already open at the start; Hard is saved at the end. The stopwatch follows real elapsed time; playback is not accelerated.
+
+![Real-device demo: preview and save difficulty](docs/media/demo-default-difficulty-fast.gif)
+
+| Step | Model round trip | SDK local processing | Inter-step comparison | Complete step |
+|---|---:|---:|---:|---:|
+| Basic | 763.28 ms | 490.99 ms | 658.00 ms | 1,912.27 ms |
+| Medium | 646.39 ms | 289.80 ms | 665.00 ms | 1,601.19 ms |
+| Hard | 647.78 ms | 296.26 ms | 702.00 ms | 1,646.04 ms |
+| Save | 706.62 ms | 301.97 ms | 0.00 ms | 1,008.59 ms |
+
+Complete-step time includes the following frame comparison. The final step has no following step and adds no comparison. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: **6,170.82ms**.
+
+[MP4](docs/media/demo-default-difficulty-fast.mp4) · [JSON](docs/media/demo-default-difficulty-fast.json)
+
+
+
 
 ## Performance
 

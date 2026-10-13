@@ -1,17 +1,33 @@
 <h1 align="center">Jev Phone</h1>
 <p align="center"><strong>毫秒级本地处理的三端多模态点击 SDK</strong></p>
-<p align="center">Android · iOS · HarmonyOS<br>真机与虚拟机 · 单步与连续点击 · Python · MIT</p>
+<p align="center">Android · iOS · HarmonyOS</p>
 <p align="center"><a href="README.md">中文</a> · <a href="README.en.md">English</a></p>
 
 Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测试平台和脚本提供可独立调用的手机点击能力。**调用方给出点击目标，SDK 完成当前画面的定位和执行。**
 
 它承接从“知道要操作什么”到“实际点到设备上”的这一段。你可以继续使用自己的任务规划、缓存和业务判断，不需要引入完整 AI Phone 框架。
 
-<!-- Two demonstration GIFs belong here only after every complete step is <=1700ms. -->
-
-[![Demo首页完整高清图](docs/media/demo-home-hd.jpg)](docs/media/demo-home-hd.jpg)
-
 ![多模态决策驱动的三端视觉交互通道](docs/media/readme/overview.zh.png)
+
+## 实机演示：预览难度并保存
+
+安卓真机连续执行四步：基础 → 中等 → 困难 → 保存修改。起始画面已打开难度弹窗，最终保存为困难。秒表按真实时间连续计时，视频未加速。
+
+![实机演示：预览难度并保存](docs/media/demo-default-difficulty-fast.gif)
+
+| 步骤 | 模型往返 | SDK本地处理 | 步间图片对比 | 整步合计 |
+|---|---:|---:|---:|---:|
+| 基础 | 763.28 ms | 490.99 ms | 658.00 ms | 1,912.27 ms |
+| 中等 | 646.39 ms | 289.80 ms | 665.00 ms | 1,601.19 ms |
+| 困难 | 647.78 ms | 296.26 ms | 702.00 ms | 1,646.04 ms |
+| 保存修改 | 706.62 ms | 301.97 ms | 0.00 ms | 1,008.59 ms |
+
+整步合计包含该步之后的图片对比；末步没有后续步骤，因此不追加对比。第一步低于2秒，其余三步均低于1.7秒；整轮实际耗时 **6,170.82ms**。
+
+[MP4](docs/media/demo-default-difficulty-fast.mp4) · [JSON](docs/media/demo-default-difficulty-fast.json)
+
+
+
 
 ## 性能
 
