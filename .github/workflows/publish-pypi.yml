@@ -1,0 +1,58 @@
+name: Build and publish PyPI package
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Upload to PyPI after package checks
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install packaging and test dependencies
+        run: python -m pip install build twine '.[demo,harmony]'
+      - name: Verify generated description
+        run: |
+          python scripts/build_pypi_readme.py
+          git diff --exit-code -- README.pypi.md
+      - name: Test SDK
+        run: python -m unittest discover -s tests
+      - name: Build distributions and validate description
+        run: |
+          python -m build --outdir pypi-dist
+          python -m twine check --strict pypi-dist/*
+      - name: Verify wheel installation outside source tree
+        run: |
+          python -m venv /tmp/jev-wheel
+          /tmp/jev-wheel/bin/python -m pip install pypi-dist/*.whl
+          cd /tmp
+          /tmp/jev-wheel/bin/python -c "from jev_phone import AndroidClicker, IOSClicker, HarmonyClicker; from importlib.metadata import version; print(version('jev-phone'))"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pypi-distributions
+          path: pypi-dist/*
+          if-no-files-found: error
+  publish:
+    if: ${{ inputs.publish && github.ref == 'refs/heads/main' }}
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/jev-phone/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pypi-distributions
+          path: dist/
+      - name: Publish using PyPI Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@release/v1

@@ -7,7 +7,9 @@ name = "jev-phone"
 version = "0.1.1"
 license = {file = "LICENSE"}
 authors = [{name = "Dongxin"}]
-description = "Experimental visual finite-choice phone clicking component"
+description = "Independent multimodal tap SDK for Android, iOS and HarmonyOS"
+readme = "README.pypi.md"
+keywords = ["mobile", "multimodal", "android", "ios", "harmonyos", "automation"]
 requires-python = ">=3.10"
 dependencies = ["httpx>=0.28", "Pillow>=10.1"]
 
