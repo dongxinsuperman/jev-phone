@@ -2,7 +2,7 @@
 <p align="center"><strong>毫秒级本地处理的三端多模态点击 SDK</strong></p>
 <p align="center">Android · iOS · HarmonyOS</p>
 <p align="center"><strong>经济、快速、准确</strong></p>
-<p align="center"><a href="README.md">中文</a> · <a href="README.en.md">English</a></p>
+<p align="center"><a href="README.md">中文</a> · <a href="README.en.md">English</a> · <a href="https://dongxinsuperman.github.io/jev-phone/">官网 ↗</a></p>
 
 Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测试平台和脚本提供可独立调用的手机点击能力。**调用方给出点击目标，SDK 完成当前画面的定位和执行。**
 
