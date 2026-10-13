@@ -1,6 +1,7 @@
 <h1 align="center">Jev Phone</h1>
 <p align="center"><strong>毫秒级本地处理的三端多模态点击 SDK</strong></p>
 <p align="center">Android · iOS · HarmonyOS</p>
+<p align="center"><strong>经济、快速、准确</strong></p>
 <p align="center"><a href="README.md">中文</a> · <a href="README.en.md">English</a></p>
 
 Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测试平台和脚本提供可独立调用的手机点击能力。**调用方给出点击目标，SDK 完成当前画面的定位和执行。**
@@ -15,19 +16,19 @@ Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测�
 
 ![实机演示：预览难度并保存](docs/media/demo-default-difficulty-fast.gif)
 
-| 步骤 | 模型往返 | SDK本地处理 | 页面稳定等待 | 整步合计 |
-|---|---:|---:|---:|---:|
-| 基础 | 763.28 ms | 490.99 ms | 658.00 ms | 1,912.27 ms |
-| 中等 | 646.39 ms | 289.80 ms | 665.00 ms | 1,601.19 ms |
-| 困难 | 647.78 ms | 296.26 ms | 702.00 ms | 1,646.04 ms |
-| 保存修改 | 706.62 ms | 301.97 ms | 0.00 ms | 1,008.59 ms |
+<table align="center">
+<thead><tr><th align="center">步骤</th><th align="center">模型往返</th><th align="center">SDK本地处理</th><th align="center">页面稳定等待</th><th align="center">整步合计</th></tr></thead>
+<tbody>
+<tr><td align="center">基础</td><td align="center">763.28 ms</td><td align="center">490.99 ms</td><td align="center">658.00 ms</td><td align="center">1,912.27 ms</td></tr>
+<tr><td align="center">中等</td><td align="center">646.39 ms</td><td align="center">289.80 ms</td><td align="center">665.00 ms</td><td align="center">1,601.19 ms</td></tr>
+<tr><td align="center">困难</td><td align="center">647.78 ms</td><td align="center">296.26 ms</td><td align="center">702.00 ms</td><td align="center">1,646.04 ms</td></tr>
+<tr><td align="center">保存修改</td><td align="center">706.62 ms</td><td align="center">301.97 ms</td><td align="center">0.00 ms</td><td align="center">1,008.59 ms</td></tr>
+</tbody>
+</table>
 
-整步合计包含点击后的页面稳定等待，通过连续截图对比判断画面是否稳定；末步没有后续步骤，因此不追加等待。第一步低于2秒，其余三步均低于1.7秒；整轮实际耗时 **6,170.82ms**。
+整步合计包含点击后的页面稳定等待，通过连续截图对比判断画面是否稳定；末步没有后续步骤，因此不追加等待。第一步低于2秒，其余三步均低于1.7秒；整轮实际耗时 **6,170.82ms**。本地 SDK 已实现毫秒级处理；模型往返耗时则受你的网络状况与模型服务响应影响，是整步耗时波动的主要来源。
 
 [MP4](docs/media/demo-default-difficulty-fast.mp4) · [JSON](docs/media/demo-default-difficulty-fast.json)
-
-
-
 
 ## 性能
 

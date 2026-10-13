@@ -1,6 +1,7 @@
 <h1 align="center">Jev Phone</h1>
 <p align="center"><strong>A multimodal tap SDK for three mobile platforms, with millisecond-level local processing</strong></p>
 <p align="center">Android · iOS · HarmonyOS</p>
+<p align="center"><strong>Economical, fast, accurate</strong></p>
 <p align="center"><a href="README.en.md">English</a> · <a href="README.md">中文</a></p>
 
 Jev Phone connects Jev multimodal decisions to mobile devices, providing an independent tap component for existing agents, testing platforms, and scripts. **Your system supplies a target; the SDK locates it in the current screen and executes the tap.**
@@ -15,19 +16,19 @@ Four consecutive taps on a real Android device: Basic → Medium → Hard → Sa
 
 ![Real-device demo: preview and save difficulty](docs/media/demo-default-difficulty-fast.gif)
 
-| Step | Model round trip | SDK local processing | Page stability wait | Complete step |
-|---|---:|---:|---:|---:|
-| Basic | 763.28 ms | 490.99 ms | 658.00 ms | 1,912.27 ms |
-| Medium | 646.39 ms | 289.80 ms | 665.00 ms | 1,601.19 ms |
-| Hard | 647.78 ms | 296.26 ms | 702.00 ms | 1,646.04 ms |
-| Save | 706.62 ms | 301.97 ms | 0.00 ms | 1,008.59 ms |
+<table align="center">
+<thead><tr><th align="center">Step</th><th align="center">Model round trip</th><th align="center">SDK local processing</th><th align="center">Page stability wait</th><th align="center">Complete step</th></tr></thead>
+<tbody>
+<tr><td align="center">Basic</td><td align="center">763.28 ms</td><td align="center">490.99 ms</td><td align="center">658.00 ms</td><td align="center">1,912.27 ms</td></tr>
+<tr><td align="center">Medium</td><td align="center">646.39 ms</td><td align="center">289.80 ms</td><td align="center">665.00 ms</td><td align="center">1,601.19 ms</td></tr>
+<tr><td align="center">Hard</td><td align="center">647.78 ms</td><td align="center">296.26 ms</td><td align="center">702.00 ms</td><td align="center">1,646.04 ms</td></tr>
+<tr><td align="center">Save</td><td align="center">706.62 ms</td><td align="center">301.97 ms</td><td align="center">0.00 ms</td><td align="center">1,008.59 ms</td></tr>
+</tbody>
+</table>
 
-Complete-step time includes waiting for the page to stabilize after the tap, using consecutive screenshots to detect stability. The final step has no following step and adds no stability wait. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: **6,170.82ms**.
+Complete-step time includes waiting for the page to stabilize after the tap, using consecutive screenshots to detect stability. The final step has no following step and adds no stability wait. Step 1 is below 2 seconds; steps 2–4 are each below 1.7 seconds. Actual run time: **6,170.82ms**. Local SDK processing runs on a millisecond timescale; model round-trip latency depends on your network conditions and model-service response time, and is the main source of variation in complete-step timing.
 
 [MP4](docs/media/demo-default-difficulty-fast.mp4) · [JSON](docs/media/demo-default-difficulty-fast.json)
-
-
-
 
 ## Performance
 
