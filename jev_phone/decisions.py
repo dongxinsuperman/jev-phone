@@ -9,7 +9,7 @@ class DecisionClient:
         self._key=api_key
         self.model='openai/gpt-6-luna-decisions' if provider=='openrouter' else 'gpt-6-luna'
         self.url='https://openrouter.ai/api/alpha/decisions' if provider=='openrouter' else 'https://api.openai.com/v1/decisions'
-        self.client=httpx.Client(timeout=35,limits=httpx.Limits(keepalive_expiry=60))
+        self.client=httpx.Client(timeout=35,limits=httpx.Limits(keepalive_expiry=180))
 
     def payload(self, state, criteria, instructions):
         if self.provider=='openrouter':

@@ -82,6 +82,8 @@ The SDK currently supports single and sequential taps on Android, iOS, and Harmo
 
 Text input, scrolling, long press, and more gestures remain future extensions. Existing systems continue to provide planning, business assertions, app launch, and device scheduling, integrating them around the tap component.
 
+[Version, upgrades and maintenance](docs/升级与维护.en.md) · Current version: **0.1.1**.
+
 ## Integration code
 
 Python 3.10+. Install from the repository:

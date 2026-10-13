@@ -221,3 +221,20 @@ class IOSCandidateRegions(unittest.TestCase):
         nodes=candidates_from_tree(tree,200,400)
         self.assertEqual([n['text'] for n in nodes],['学习','学习'])
         self.assertEqual([n['bounds'] for n in nodes],[[20,300,80,360],[100,300,160,360]])
+
+class AndroidSettledFrameContract(unittest.TestCase):
+    def test_reused_frame_reads_one_tree_without_device_size_or_screenshot(self):
+        from jev_phone.adapters import AndroidAdapter
+        class Device:
+            def __init__(self):self.tree_reads=0
+            @property
+            def info(self):raise AssertionError('redundant size query')
+            def dump_hierarchy(self,**kwargs):
+                self.tree_reads+=1
+                return '<hierarchy />'
+            def window_size(self):raise AssertionError('redundant size fallback')
+        device=Device();a=AndroidAdapter(device=device);frame=image(200,400)
+        obs=a.observe_with_frame(stage,frame)
+        self.assertIs(obs.image,frame)
+        self.assertEqual(obs.viewport,(200,400))
+        self.assertEqual(device.tree_reads,1)

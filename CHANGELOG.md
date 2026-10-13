@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 — 2026-10-13
+
+- Synchronize the existing V3 point-centered annotations across all three platforms; candidate bounds and tap coordinates remain unchanged.
+- Reuse settled Android frames and their dimensions without another screenshot or device-size query.
+- Retain the approved 180-second model connection keepalive and require Pillow 10.1+ for the existing renderer.
+- Add the qualified four-step Demo recording, bilingual timing breakdown, upgrade and maintenance instructions.
+- Preserve current execution flow, V3 stability parameters and public call signatures. Private GitHub delivery only; no PyPI publication.
+
 ## 0.1.0 — 2026-10-12
 
 - Standalone Android, iOS and HarmonyOS click SDK.

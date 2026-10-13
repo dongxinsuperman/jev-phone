@@ -41,7 +41,10 @@ class AndroidAdapter:
         return Observation(tree,frame,viewport)
 
     def observe_with_frame(self,stage,frame):
-        return self.observe(stage,frame)
+        # V3 already supplied this exact settled frame; reuse its pixel dimensions.
+        viewport=stage('capture',lambda:Image.open(io.BytesIO(frame)).size)
+        tree=stage('tree',lambda:self.device.dump_hierarchy(compressed=False,pretty=False,max_depth=100,root_in_active=True))
+        return Observation(tree,frame,viewport)
 
     def click(self,x,y,observation):
         result=self.device.click(int(x),int(y))
