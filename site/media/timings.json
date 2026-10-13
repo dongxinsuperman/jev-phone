@@ -1,0 +1,69 @@
+{
+  "job_id": "1b7c7fdb68c24c6e84136789d0adc4d9",
+  "qualified": true,
+  "wall_ms": 6170.82,
+  "limits_ms": {
+    "first_step": 2000,
+    "remaining_steps": 1700
+  },
+  "rows": [
+    {
+      "step": 1,
+      "target": "点击弹窗里的基础难度卡片",
+      "model_ms": 763.28,
+      "sdk_local_ms": 490.99,
+      "comparison_ms": 658,
+      "complete_step_ms": 1912.27,
+      "selected": "N29",
+      "point": [
+        958,
+        657
+      ]
+    },
+    {
+      "step": 2,
+      "target": "点击弹窗里的中等难度卡片",
+      "model_ms": 646.39,
+      "sdk_local_ms": 289.8,
+      "comparison_ms": 665,
+      "complete_step_ms": 1601.19,
+      "selected": "N30",
+      "point": [
+        1258,
+        657
+      ]
+    },
+    {
+      "step": 3,
+      "target": "点击弹窗里的困难难度卡片",
+      "model_ms": 647.78,
+      "sdk_local_ms": 296.26,
+      "comparison_ms": 702,
+      "complete_step_ms": 1646.04,
+      "selected": "N31",
+      "point": [
+        1557,
+        657
+      ]
+    },
+    {
+      "step": 4,
+      "target": "点击保存修改",
+      "model_ms": 706.62,
+      "sdk_local_ms": 301.97,
+      "comparison_ms": 0,
+      "complete_step_ms": 1008.59,
+      "selected": "N32",
+      "point": [
+        2185,
+        928
+      ]
+    }
+  ],
+  "playback": "original elapsed time, continuous clock, no speedup",
+  "recording_start": 1791831825.808094,
+  "sdk_start": 1791831825.8325107,
+  "recording_end": 1791831832.804006,
+  "initial_state": "default difficulty unset, dialog open",
+  "final_state": "hard difficulty saved, dialog closed"
+}
