@@ -42,7 +42,7 @@ Complete step time includes capture, candidate processing, the model round trip,
 
 The current multimodal Jev integration uses a **finite-choice decision interface**. It interprets the image and selects a supplied candidate; it does not directly return a device action or executable tap coordinates through this integration. The SDK therefore bridges the model's choice to an actual device operation.
 
-The component obtains actionable element bounds from the UI tree, uses their four corners to draw rectangles on the screenshot, and assigns IDs. Jev receives the current target and annotated image and returns an ID. The SDK looks up that element, computes its center, and asks the platform driver to tap it. Bounds are stored as the upper-left and lower-right coordinates, which determine all four corners.
+The component obtains actionable element bounds from the UI tree, uses their four corners to draw rectangles on the screenshot, and assigns IDs. Jev receives the current target and annotated image and returns an ID. The SDK looks up that element, computes its center, and asks the platform driver to tap it. Bounds are stored as the upper-left and lower-right coordinates, which determine all four corners. The actual annotated image also marks tap centers with red dots and leader lines, places labels to avoid collisions, and shrinks overlapping display boxes around their original centers. These display adjustments do not change candidate bounds or tap coordinates.
 
 ![From a semantic target to a numbered choice and a device tap](docs/media/readme/target-to-tap.en.svg)
 
@@ -86,14 +86,17 @@ Text input, scrolling, long press, and more gestures remain future extensions. E
 
 ## Integration code
 
-Python 3.10+. Install from the repository:
+Use **Python 3.10+** (for example, `python3.11`). The commands below target macOS / Linux. This repository is private: access permission and GitHub Git authentication are required. Without repository access, use the supplied source archive or wheel; see [installation and upgrades](docs/升级与维护.en.md). Install a pinned version from the repository:
 
 ```sh
 git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
-python3 -m venv .venv
+git checkout v0.1.1
+python3.11 -m venv .venv
 .venv/bin/pip install -e '.[android]'
 ```
+
+Install `.[android]` for Android, `.` for iOS, or `.[harmony]` for HarmonyOS; use `.[android,harmony]` for all three. Prepare the device service using the [device guide, Chinese](docs/三端设备准备.md), unlock the device and open the target app. Replace the serial with the actual ID from `adb devices -l`; the sample targets must exist in the current app. The default provider is OpenRouter Decisions: supply a matching account key with access to the configured model interface. The SDK does not launch apps or sign in for you.
 
 ```python
 from getpass import getpass

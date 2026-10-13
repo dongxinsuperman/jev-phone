@@ -28,7 +28,7 @@
 <p><img src="docs/media/readme/timing.en.png" alt="Channel processing and timing" /></p>
 <h2>How it works: Jev chooses, the SDK executes</h2>
 <p>The current multimodal Jev integration uses a <strong>finite-choice decision interface</strong>. It interprets the image and selects a supplied candidate; it does not directly return a device action or executable tap coordinates through this integration. The SDK therefore bridges the model's choice to an actual device operation.</p>
-<p>The component obtains actionable element bounds from the UI tree, uses their four corners to draw rectangles on the screenshot, and assigns IDs. Jev receives the current target and annotated image and returns an ID. The SDK looks up that element, computes its center, and asks the platform driver to tap it. Bounds are stored as the upper-left and lower-right coordinates, which determine all four corners.</p>
+<p>The component obtains actionable element bounds from the UI tree, uses their four corners to draw rectangles on the screenshot, and assigns IDs. Jev receives the current target and annotated image and returns an ID. The SDK looks up that element, computes its center, and asks the platform driver to tap it. Bounds are stored as the upper-left and lower-right coordinates, which determine all four corners. The actual annotated image also marks tap centers with red dots and leader lines, places labels to avoid collisions, and shrinks overlapping display boxes around their original centers. These display adjustments do not change candidate bounds or tap coordinates.</p>
 <p><img src="docs/media/readme/target-to-tap.en.svg" alt="From a semantic target to a numbered choice and a device tap" /></p>
 <h2>Why combine the UI tree and screenshot?</h2>
 <p>The rectangle gets its geometry from the UI tree, while the screenshot supplies visible text, icons, and appearance. A node can have an empty label yet display an avatar. In that case, Jev identifies the avatar in the image and chooses its ID; the SDK uses the same ID to recover the known bounds. This binds a multimodal choice to an executable element.</p>
@@ -69,12 +69,14 @@
 <p>Text input, scrolling, long press, and more gestures remain future extensions. Existing systems continue to provide planning, business assertions, app launch, and device scheduling, integrating them around the tap component.</p>
 <p><a href="docs/%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%BB%B4%E6%8A%A4.en.md">Version, upgrades and maintenance</a> · Current version: <strong>0.1.1</strong>.</p>
 <h2>Integration code</h2>
-<p>Python 3.10+. Install from the repository:</p>
+<p>Use <strong>Python 3.10+</strong> (for example, <code>python3.11</code>). The commands below target macOS / Linux. This repository is private: access permission and GitHub Git authentication are required. Without repository access, use the supplied source archive or wheel; see <a href="docs/%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%BB%B4%E6%8A%A4.en.md">installation and upgrades</a>. Install a pinned version from the repository:</p>
 <pre><code class="language-sh">git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
-python3 -m venv .venv
+git checkout v0.1.1
+python3.11 -m venv .venv
 .venv/bin/pip install -e '.[android]'
 </code></pre>
+<p>Install <code>.[android]</code> for Android, <code>.</code> for iOS, or <code>.[harmony]</code> for HarmonyOS; use <code>.[android,harmony]</code> for all three. Prepare the device service using the <a href="docs/%E4%B8%89%E7%AB%AF%E8%AE%BE%E5%A4%87%E5%87%86%E5%A4%87.md">device guide, Chinese</a>, unlock the device and open the target app. Replace the serial with the actual ID from <code>adb devices -l</code>; the sample targets must exist in the current app. The default provider is OpenRouter Decisions: supply a matching account key with access to the configured model interface. The SDK does not launch apps or sign in for you.</p>
 <pre><code class="language-python">from getpass import getpass
 from jev_phone import AndroidClicker
 
