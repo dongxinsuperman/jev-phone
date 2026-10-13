@@ -69,7 +69,11 @@
 <p>后续可扩展输入、滚动、长按等动作。任务规划、业务断言、应用启动和设备调度由现有系统承接，可以围绕点击组件继续集成。</p>
 <p><a href="docs/%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%BB%B4%E6%8A%A4.md">版本、升级与维护</a> · 当前版本 <strong>0.1.1</strong>。</p>
 <h2>接入代码</h2>
-<p>需要 <strong>Python 3.10+</strong>（例如 <code>python3.11</code>）；下面命令适用于 macOS / Linux。克隆前需具备仓库访问权限并完成 GitHub Git 认证；也可使用源码包或 wheel，安装方法见<a href="docs/%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%BB%B4%E6%8A%A4.md">升级与维护</a>。从仓库安装固定版本：</p>
+<p>使用 Python 3.10+，可直接从 <a href="https://pypi.org/project/jev-phone/0.1.1/">PyPI</a> 安装：</p>
+<pre><code class="language-sh">python -m pip install 'jev-phone[android]==0.1.1'
+</code></pre>
+<p>iOS 安装 <code>jev-phone</code>，鸿蒙安装 <code>jev-phone[harmony]</code>，Demo 安装 <code>jev-phone[demo]</code>。运行仓库中的 examples 脚本仍需下载完整源码。</p>
+<p>需要 <strong>Python 3.10+</strong>（例如 <code>python3.11</code>）；下面命令适用于 macOS / Linux。也可从公开仓库或源码包安装，安装方法见<a href="docs/%E5%8D%87%E7%BA%A7%E4%B8%8E%E7%BB%B4%E6%8A%A4.md">升级与维护</a>。从仓库安装固定版本：</p>
 <pre><code class="language-sh">git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
 git checkout v0.1.1

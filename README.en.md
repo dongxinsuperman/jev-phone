@@ -86,7 +86,16 @@ Text input, scrolling, long press, and more gestures remain future extensions. E
 
 ## Integration code
 
-Use **Python 3.10+** (for example, `python3.11`). The commands below target macOS / Linux. Cloning requires repository access and GitHub Git authentication. Alternatively, use a source archive or wheel; see [installation and upgrades](docs/升级与维护.en.md). Install a pinned version from the repository:
+Install the published SDK from [PyPI](https://pypi.org/project/jev-phone/0.1.1/) with Python 3.10+:
+
+```sh
+python -m pip install 'jev-phone[android]==0.1.1'
+```
+
+Use `jev-phone` for iOS, `jev-phone[harmony]` for HarmonyOS, or `jev-phone[demo]` for the Demo. The full repository provides the example scripts.
+
+
+Use **Python 3.10+** (for example, `python3.11`). The commands below target macOS / Linux. Alternatively, install from the public repository, source archive or wheel; see [installation and upgrades](docs/升级与维护.en.md). Install a pinned version from the repository:
 
 ```sh
 git clone https://github.com/dongxinsuperman/jev-phone.git
