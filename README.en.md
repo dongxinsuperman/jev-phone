@@ -82,17 +82,27 @@ The SDK currently supports single and sequential taps on Android, iOS, and Harmo
 
 Text input, scrolling, long press, and more gestures remain future extensions. Existing systems continue to provide planning, business assertions, app launch, and device scheduling, integrating them around the tap component.
 
-[Version, upgrades and maintenance](docs/升级与维护.en.md) · Current version: **0.1.1**.
+[Version, upgrades and maintenance](docs/升级与维护.en.md) · Current version: **0.2.0**.
 
 ## Integration code
 
-Install the published SDK from [PyPI](https://pypi.org/project/jev-phone/0.1.1/) with Python 3.10+:
+Install the published SDK from [PyPI](https://pypi.org/project/jev-phone/0.2.0/) with Python 3.10+:
 
 ```sh
-python -m pip install 'jev-phone[android]==0.1.1'
+python -m pip install 'jev-phone[android]==0.2.0'
 ```
 
 Use `jev-phone` for iOS, `jev-phone[harmony]` for HarmonyOS, or `jev-phone[demo]` for the Demo. The full repository provides the example scripts.
+
+
+**Optional drawing enhancements in 0.2.0 (off by default):** one switch controls H5 and available native enhancements across all three platforms. Reliable geometry refines display regions; unavailable or ambiguous information keeps the original drawing. Candidate IDs, tap coordinates and execution behavior stay unchanged.
+
+```python
+from jev_phone import configure
+configure(visual_enhancement=True)
+```
+
+Install `jev-phone[visual]` for iOS H5 inspection. Native iOS clipping requires the bundled read-only WDA extension; stock WDA falls back to ordinary capture. See [enhancement prerequisites and fallback, Chinese](docs/绘图增强.md) and [upgrade instructions](docs/升级与维护.en.md).
 
 
 Use **Python 3.10+** (for example, `python3.11`). The commands below target macOS / Linux. Alternatively, install from the public repository, source archive or wheel; see [installation and upgrades](docs/升级与维护.en.md). Install a pinned version from the repository:
@@ -100,7 +110,7 @@ Use **Python 3.10+** (for example, `python3.11`). The commands below target macO
 ```sh
 git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
-git checkout v0.1.1
+git checkout v0.2.0
 python3.11 -m venv .venv
 .venv/bin/pip install -e '.[android]'
 ```

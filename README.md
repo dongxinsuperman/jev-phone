@@ -82,17 +82,27 @@ Jev Phone 将 Jev 多模态决策接到三端设备上，为已有 Agent、测�
 
 后续可扩展输入、滚动、长按等动作。任务规划、业务断言、应用启动和设备调度由现有系统承接，可以围绕点击组件继续集成。
 
-[版本、升级与维护](docs/升级与维护.md) · 当前版本 **0.1.1**。
+[版本、升级与维护](docs/升级与维护.md) · 当前版本 **0.2.0**。
 
 ## 接入代码
 
-使用 Python 3.10+，可直接从 [PyPI](https://pypi.org/project/jev-phone/0.1.1/) 安装：
+使用 Python 3.10+，可直接从 [PyPI](https://pypi.org/project/jev-phone/0.2.0/) 安装：
 
 ```sh
-python -m pip install 'jev-phone[android]==0.1.1'
+python -m pip install 'jev-phone[android]==0.2.0'
 ```
 
 iOS 安装 `jev-phone`，鸿蒙安装 `jev-phone[harmony]`，Demo 安装 `jev-phone[demo]`。运行仓库中的 examples 脚本仍需下载完整源码。
+
+
+**0.2.0 可选绘图增强（默认关闭）：** 一个总开关控制三端的 H5 与可用原生增强；有可靠信息才调整展示框，没有则保留原样。候选编号、点击坐标和执行流程保持不变。
+
+```python
+from jev_phone import configure
+configure(visual_enhancement=True)
+```
+
+iOS H5 增强安装 `jev-phone[visual]`；iOS 原生增强需要配套只读 WDA 扩展。各端通道条件、回退和计时见[绘图增强说明](docs/绘图增强.md)。
 
 
 需要 **Python 3.10+**（例如 `python3.11`）；下面命令适用于 macOS / Linux。也可从公开仓库或源码包安装，安装方法见[升级与维护](docs/升级与维护.md)。从仓库安装固定版本：
@@ -100,7 +110,7 @@ iOS 安装 `jev-phone`，鸿蒙安装 `jev-phone[harmony]`，Demo 安装 `jev-ph
 ```sh
 git clone https://github.com/dongxinsuperman/jev-phone.git
 cd jev-phone
-git checkout v0.1.1
+git checkout v0.2.0
 python3.11 -m venv .venv
 .venv/bin/pip install -e '.[android]'
 ```
