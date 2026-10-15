@@ -1,6 +1,7 @@
 import base64
 import io
 import logging
+import time
 import xml.etree.ElementTree as ET
 import httpx
 from PIL import Image
@@ -21,7 +22,9 @@ class IOSAdapter:
         '只有目标当前明确可操作才选择其编号。'
     )
     TYPES={'XCUIElementTypeButton','XCUIElementTypeCell','XCUIElementTypeSwitch','XCUIElementTypeTextField','XCUIElementTypeSecureTextField','XCUIElementTypeLink','XCUIElementTypeIcon','XCUIElementTypeImage'}
-    def __init__(self,wda_url,session_id=None,client=None):
+    def __init__(self,wda_url,session_id=None,client=None,*,udid=None):
+        self.udid=udid
+        self._visual_channel=None
         self.url=wda_url.rstrip('/')
         if not self.url.startswith(('http://','https://')):raise ValueError('WDA URL must use http or https.')
         self.identity='ios:'+self.url
@@ -45,7 +48,25 @@ class IOSAdapter:
             if not self.session_id:raise RuntimeError('WDA did not return a session ID.')
         return '/session/'+self.session_id
 
-    def source(self):return self._request('GET',self._session()+'/source?format=xml')['value']
+    def source(self):
+        from ..settings import visual_enhancement_enabled
+        self._native_snapshot=None
+        self._native_capture={'status':'unavailable','reason':'WDA extension unavailable'}
+        if visual_enhancement_enabled() and getattr(self,'_native_supported',None) is not False:
+            started=time.perf_counter()
+            try:
+                from ..native_visual import ios_source
+                snapshot=self._request('GET',self._session()+'/wda/nativeGeometryProbe')['value']
+                source=ios_source(snapshot)
+                self._native_snapshot=snapshot
+                self._native_supported=True
+                self._native_capture={'status':'available','capture_ms':round((time.perf_counter()-started)*1000,2)}
+                return source
+            except Exception as error:
+                if isinstance(error,httpx.HTTPStatusError) and error.response.status_code in (404,405):
+                    self._native_supported=False
+                self._native_capture={'status':'unavailable','reason':type(error).__name__}
+        return self._request('GET',self._session()+'/source?format=xml')['value']
 
     def viewport(self):
         root=self._session()
@@ -88,6 +109,7 @@ class IOSAdapter:
             e=ET.Element('node',{'text':label,'resource-id':n.get('name',''),'content-desc':'','class':kind,
                 'bounds':f'[{bounds[0]},{bounds[1]}][{bounds[2]},{bounds[3]}]',
                 'clickable':str(active).lower(),'enabled':n.get('enabled','false'),'visible-to-user':str(visible).lower()})
+            if n.get('uid'):e.set('native-uid',n.get('uid'))
             for child in n:e.append(convert_node(child))
             return e
         out=ET.Element('hierarchy');out.append(convert_node(root))
@@ -109,6 +131,10 @@ class IOSAdapter:
             raise RuntimeError('XCTest/screenshot aspect mismatch')
         viewport=(pw,ph)
         tree,meta=stage('adapt',lambda:self.convert(source,frame,viewport))
+        if getattr(self,'_native_snapshot',None) is not None:
+            meta['_native_snapshot']=self._native_snapshot
+        if getattr(self,'_native_capture',None):meta['_native_capture']=self._native_capture
+        self._native_snapshot=None
         return Observation(tree,frame,viewport,meta)
 
     def observe_with_frame(self,stage,frame):
@@ -137,7 +163,18 @@ class IOSAdapter:
                 # V3 preserves successful tap outcome; retry restoration at close.
                 logging.getLogger(__name__).warning('WDA click settings restoration pending')
 
+    def enhance_annotation(self, observation, nodes):
+        from ..settings import visual_enhancement_enabled
+        if not visual_enhancement_enabled():return {}
+        from ..visual_channels import enhance_ios
+        regions,status=enhance_ios(self,observation,nodes)
+        observation.metadata['visual_enhancement']=status
+        return regions
+
     def close(self):
+        if self._visual_channel:
+            try:self._visual_channel.close()
+            finally:self._visual_channel=None
         try:
             if self.click_restore and self.session_id:
                 self._request('POST',self._session()+'/appium/settings',{'settings':self.click_restore})

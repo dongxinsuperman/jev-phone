@@ -90,7 +90,25 @@ class HarmonyAdapter:
         finally:
             client._recv_msg = original
 
-    def source(self):return self.convert(self.raw_tree())
+    def source(self):
+        from ..settings import visual_enhancement_enabled
+        enabled=visual_enhancement_enabled()
+        self._native_capture={'status':'unavailable','reason':'uniqueId unavailable'}
+        raw=converted=None
+        if enabled and getattr(self,'_native_supported',None) is not False:
+            try:
+                from ..native_visual import harmony_capture
+                raw,self._native_capture=harmony_capture(self)
+                converted=self.convert(raw)
+                self._native_supported=True
+            except Exception as error:
+                raw=None
+                self._native_capture={'status':'unavailable','reason':type(error).__name__}
+                # Old UiTest versions need not repeat an unsupported command per step.
+                self._native_supported=False
+        if raw is None:raw=self.raw_tree()
+        self._visual_raw=raw if enabled else None
+        return converted if converted is not None else self.convert(raw)
 
     def observe(self,stage,frame=None):
         viewport=stage('capture',self.viewport)
@@ -98,7 +116,10 @@ class HarmonyAdapter:
         tree=stage('tree',self.source)
         if Image.open(io.BytesIO(frame)).size!=viewport:
             raise RuntimeError('Harmony viewport and screenshot dimensions disagree.')
-        return Observation(tree,frame,viewport)
+        metadata={'_visual_raw':self._visual_raw} if getattr(self,'_visual_raw',None) else {}
+        if getattr(self,'_visual_raw',None) is not None:metadata['_native_capture']=self._native_capture
+        self._visual_raw=None
+        return Observation(tree,frame,viewport,metadata)
 
     def observe_with_frame(self,stage,frame):
         return self.observe(stage,frame)
@@ -106,5 +127,15 @@ class HarmonyAdapter:
     def click(self,x,y,observation):
         # V3 direct UITest completion; bypass hmdriver2's @delay (600ms).
         return self.driver._invoke('Driver.click',args=[int(x),int(y)])
+
+    def enhance_annotation(self, observation, nodes):
+        from ..settings import visual_enhancement_enabled
+        raw=observation.metadata.pop('_visual_raw',None)
+        if not visual_enhancement_enabled():return {}
+        from ..visual_channels import enhance_harmony
+        if raw is None:return {}
+        regions,status=enhance_harmony(self,observation,nodes,raw)
+        observation.metadata['visual_enhancement']=status
+        return regions
 
     def close(self):pass  # Shared device service remains owned by the caller.

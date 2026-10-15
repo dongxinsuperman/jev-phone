@@ -1,0 +1,2 @@
+# Unified diff context lines use a single space for an empty source line.
+jev_phone/wda/*.patch whitespace=-blank-at-eol

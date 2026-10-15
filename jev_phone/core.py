@@ -57,7 +57,8 @@ def candidates_from_tree(xml, width, height):
     return nodes
 
 
-def annotate(frame, nodes):
+def annotate(frame, nodes, visual_regions=None):
+    visual_regions = visual_regions or {}
     ns = nodes
     im = Image.open(io.BytesIO(frame)).convert("RGB")
     d = ImageDraw.Draw(im)
@@ -76,7 +77,7 @@ def annotate(frame, nodes):
         scale = 0.45 if any(m is not n and overlap(n["bounds"], m["bounds"]) for m in ns) else 1.0
         scales[n["id"]] = scale
         hw, hh = (r - x) * scale / 2, (s - y) * scale / 2
-        boxes[n["id"]] = (round(cx - hw), round(cy - hh), round(cx + hw), round(cy + hh))
+        boxes[n["id"]] = tuple(visual_regions.get(n["id"], {}).get("bounds", (round(cx - hw), round(cy - hh), round(cx + hw), round(cy + hh))))
     labels = {}
     occupied = []
     for n in sorted(ns, key=lambda n: (n["bounds"][2] - n["bounds"][0]) * (n["bounds"][3] - n["bounds"][1])):
@@ -95,7 +96,9 @@ def annotate(frame, nodes):
                 lx = max(0, min(round(lx), im.width - w))
                 ly = max(0, min(round(ly), im.height - h))
                 rect = (lx, ly, lx + w, ly + h)
-                if (boxes[key][2] - boxes[key][0]) * (
+                if key in visual_regions and not (x <= lx and y <= ly and lx+w <= r and ly+h <= s):
+                    continue
+                if key not in visual_regions and (boxes[key][2] - boxes[key][0]) * (
                     boxes[key][3] - boxes[key][1]
                 ) < im.width * im.height * 0.15 and overlap(rect, boxes[key]):
                     continue
@@ -114,7 +117,18 @@ def annotate(frame, nodes):
         labels[key] = rect
         occupied.append(rect)
     for key, rect in boxes.items():
-        d.rectangle(rect, outline="#dc2020", width=2)
+        region = visual_regions.get(key, {})
+        corners = region.get("corners")
+        if corners is not None:
+            if len(corners) != 4 or any(v < 0 for v in corners):
+                raise ValueError("Invalid native corners")
+            radii = [v for v in corners if v > 0]
+            if radii and max(radii)-min(radii) > .01:
+                raise ValueError("Unsupported asymmetric native corners")
+            d.rounded_rectangle(rect, radius=max(radii, default=0),
+                                corners=tuple(v > 0 for v in corners), outline="#dc2020", width=2)
+        else:
+            d.rounded_rectangle(rect, radius=region.get("radius", 0), outline="#dc2020", width=2)
     for key, (x, y, r, s) in labels.items():
         cx, cy = points[key]
         d.line((cx, cy, max(x, min(cx, r)), max(y, min(cy, s))), fill="#dc2020", width=1)
@@ -215,7 +229,17 @@ class PhoneClicker:
             width,height=Image.open(io.BytesIO(frame)).size
             nodes=candidates_from_tree(observation.tree,width,height)
             if not nodes:raise ClickFailure('当前页面没有可执行候选。')
-            return nodes,annotate(frame,nodes)
+            regions={}
+            enhance=getattr(self.adapter,'enhance_annotation',None)
+            from .settings import visual_enhancement_enabled
+            if enhance and visual_enhancement_enabled():
+                regions=stage('visual_enhancement',lambda:enhance(observation,nodes))
+            try:
+                picture=annotate(frame,nodes,regions)
+            except (ValueError,TypeError):
+                observation.metadata['visual_render_fallback']=True
+                picture=annotate(frame,nodes)
+            return nodes,picture
         nodes,picture=stage('prepare',prepare)
         emit({"phase": "candidates", "message": f"生成 {len(nodes)} 个候选，正在请求模型", "image_bytes": picture, "before_bytes": frame, "candidate_count": len(nodes)})
         state = ["当前点击目标："+target, "只定位此目标，不规划其他动作。编号仅对当前图有效。"]
@@ -247,6 +271,9 @@ class PhoneClicker:
         total = round((time.perf_counter()-start)*1000, 2)
         result = {"target": target, "selected": choice, "point": point, "bounds": node["bounds"], "timings": times, "total_ms": total,
                   "non_model_ms": round(total-times["model"], 2), "status": "driver_completed", "model": data.get("model", self.model), "platform": self.adapter.platform, "device": self.adapter.identity}
+        if "visual_enhancement" in observation.metadata:
+            result["visual_enhancement"]=observation.metadata["visual_enhancement"]
+            result["visual_render_fallback"]=observation.metadata.get("visual_render_fallback",False)
         emit({"phase": "completed", "message": "点击接口已返回", "result": result})
         return result
 
@@ -263,12 +290,12 @@ class PhoneClicker:
     def __exit__(self,*args):self.close()
 
 class AndroidClicker(PhoneClicker):
-    def __init__(self,serial,api_key,provider='openrouter',device=None):
-        super().__init__(AndroidAdapter(serial,device),api_key,provider,owns_adapter=True)
+    def __init__(self,serial,api_key,provider='openrouter',device=None,*,visual_timeout=1.0):
+        super().__init__(AndroidAdapter(serial,device,visual_timeout=visual_timeout),api_key,provider,owns_adapter=True)
 
 class IOSClicker(PhoneClicker):
-    def __init__(self,wda_url,api_key,provider='openrouter',session_id=None):
-        super().__init__(IOSAdapter(wda_url,session_id),api_key,provider,owns_adapter=True)
+    def __init__(self,wda_url,api_key,provider='openrouter',session_id=None,*,udid=None):
+        super().__init__(IOSAdapter(wda_url,session_id,udid=udid),api_key,provider,owns_adapter=True)
 
 class HarmonyClicker(PhoneClicker):
     def __init__(self,serial,api_key,provider='openrouter',driver=None):
